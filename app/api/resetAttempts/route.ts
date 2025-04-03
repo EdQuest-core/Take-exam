@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Attempt record not found' }, { status: 404 });
     }
 
-    // Reset attempts but keep history, best score, and average completion time
+    // Reset attempts but keep history
     attemptData.attemptsLeft = attemptData.totalAttempts;
     await attemptData.save();
 
@@ -30,8 +30,8 @@ export async function POST(request: NextRequest) {
       attemptsLeft: attemptData.attemptsLeft,
       totalAttempts: attemptData.totalAttempts,
       bestScore: attemptData.bestScore,
-      averageCompletionTime: attemptData.averageCompletionTime ?? 0, // ✅ Ensure it returns a valid number
-      attemptHistory: attemptData.attemptHistory, // ✅ Preserve attempt history
+      averageCompletionTime: attemptData.averageCompletionTime ?? 0, 
+      attemptHistory: attemptData.attemptHistory, 
       message: 'Attempts reset successfully'
     });
   } catch (error) {

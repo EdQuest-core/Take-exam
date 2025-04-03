@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
           const fileContent = await fs.readFile(filePath, "utf-8");
           const examData = JSON.parse(fileContent);
           
-          // Add additional properties needed by the UI
           recommendedExams.push({
             id: examFile.replace('.json', ''),
             title: examData.title || `${level} ${category} Exam`,
@@ -57,7 +56,6 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Return the expected format
     return NextResponse.json({ recommendedExams });
   } catch (error) {
     console.error("Error fetching recommended exams:", error);

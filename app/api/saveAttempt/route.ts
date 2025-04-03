@@ -13,25 +13,24 @@ export async function POST(request: NextRequest) {
 
     await dbConnect();
 
-    // ✅ Use findOneAndUpdate to avoid duplicate key errors
     const attemptData = await Attempt.findOneAndUpdate(
-      { deviceId, title, category }, // Find by unique identifier
+      { deviceId, title, category }, 
       {
-        $set: { lastAttemptDate: new Date(), attemptsLeft }, // Update fields
-        $push: { attemptHistory: { date: new Date(), score, completionTime } }, // Add attempt to history
-        $max: { bestScore: score }, // Only update if new score is higher
+        $set: { lastAttemptDate: new Date(), attemptsLeft },
+        $push: { attemptHistory: { date: new Date(), score, completionTime } }, 
+        $max: { bestScore: score }, 
       },
-      { upsert: true, new: true } // Create if not exists, return updated document
+      { upsert: true, new: true }
     );
 
-    // ✅ Calculate average completion time
+    // Calculate average completion time
     const totalTime = attemptData.attemptHistory.reduce(
       (sum: number, attempt: { completionTime?: number }) => sum + (attempt.completionTime || 0),
       0
     );
     attemptData.averageCompletionTime = totalTime / attemptData.attemptHistory.length;
 
-    await attemptData.save(); // ✅ Save the updated document
+    await attemptData.save(); 
 
     return NextResponse.json({
       title: attemptData.title,
@@ -39,7 +38,7 @@ export async function POST(request: NextRequest) {
       attemptsLeft: attemptData.attemptsLeft,
       totalAttempts: attemptData.totalAttempts || 3,
       bestScore: attemptData.bestScore,
-      averageCompletionTime: attemptData.averageCompletionTime, // ✅ Return average time
+      averageCompletionTime: attemptData.averageCompletionTime, 
     });
   } catch (error) {
     console.error('Error saving attempt data:', error);

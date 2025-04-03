@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
     // Find attempt data for this device and exam
     let attemptData = await Attempt.findOne({ deviceId, title, category });
 
-    // If no data exists, create a new attempt record (temporary object, not saved to DB)
+    // If no data exists, create a new 
     if (!attemptData) {
       attemptData = {
         deviceId,
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
         attemptsLeft: 3,
         totalAttempts: 3,
         bestScore: 0,
-        averageCompletionTime: 0, // Default completion time
+        averageCompletionTime: 0, 
         attemptHistory: []
       };
     }
@@ -38,8 +38,8 @@ export async function GET(request: NextRequest) {
       attemptsLeft: attemptData.attemptsLeft,
       totalAttempts: attemptData.totalAttempts,
       bestScore: attemptData.bestScore,
-      averageCompletionTime: attemptData.averageCompletionTime, // ✅ Include average completion time
-      attemptHistory: attemptData.attemptHistory // ✅ Include attempt history
+      averageCompletionTime: attemptData.averageCompletionTime, 
+      attemptHistory: attemptData.attemptHistory 
     });
   } catch (error) {
     console.error('Error fetching attempt data:', error);

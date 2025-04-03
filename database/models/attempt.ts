@@ -11,9 +11,9 @@ export interface IAttempt extends Document {
   attemptHistory: {
     date: Date;
     score: number;
-    completionTime: number;  // Time in milliseconds
+    completionTime: number;  
   }[];
-  averageCompletionTime: number;  // Average completion time in milliseconds
+  averageCompletionTime: number;  
 }
 
 const AttemptSchema: Schema = new Schema({
@@ -27,9 +27,9 @@ const AttemptSchema: Schema = new Schema({
   attemptHistory: [{
     date: { type: Date, default: Date.now },
     score: { type: Number, required: true },
-    completionTime: { type: Number, default: 0 }  // Time in milliseconds
+    completionTime: { type: Number, default: 0 } 
   }],
-  averageCompletionTime: { type: Number, default: 0 }  // Average time in milliseconds
+  averageCompletionTime: { type: Number, default: 0 }  
 }, { timestamps: true });
 
 AttemptSchema.index({ deviceId: 1, title: 1, category: 1 }, { unique: true });
