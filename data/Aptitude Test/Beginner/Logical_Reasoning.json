@@ -1,0 +1,159 @@
+{
+  "category": "Aptitude Tests",
+    "title": "Logical Reasoning Basics",
+    "level": "Beginner",
+    "Difficulty": "Medium",
+    "timer": "10 minutes",
+    "questions": [
+      {
+        "question": "All dogs are animals. Some animals are brown. Does it follow that some dogs are brown?",
+        "options": [
+          "No",
+          "Yes",
+          "Maybe",
+          "Cannot be determined"
+        ],
+        "correctAnswer": "Cannot be determined"
+      },
+      {
+        "question": "Complete the analogy: Bird : Fly :: Fish : __",
+        "options": [
+          "Swim",
+          "Run",
+          "Jump",
+          "Crawl"
+        ],
+        "correctAnswer": "Swim"
+      },
+      {
+        "question": "True or False: If all roses are flowers, then some flowers are roses.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      },
+      {
+        "question": "What does 'All men are mortal' mean?",
+        "options": [
+          "Every man will die",
+          "Some men will die",
+          "Men live forever",
+          "Only men are mortal"
+        ],
+        "correctAnswer": "Every man will die"
+      },
+      {
+        "question": "Complete the analogy: Sun : Day :: Moon : __",
+        "options": [
+          "Night",
+          "Sky",
+          "Stars",
+          "Clouds"
+        ],
+        "correctAnswer": "Night"
+      },
+      {
+        "question": "All cats are mammals. Fluffy is a cat. What can you conclude?",
+        "options": [
+          "Fluffy is a mammal",
+          "Fluffy is not a mammal",
+          "Fluffy is a dog",
+          "Cannot be determined"
+        ],
+        "correctAnswer": "Fluffy is a mammal"
+      },
+      {
+        "question": "True or False: If some birds can fly, then all birds can fly.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "false"
+      },
+      {
+        "question": "Complete the analogy: Pen : Write :: Knife : __",
+        "options": [
+          "Cut",
+          "Eat",
+          "Draw",
+          "Hold"
+        ],
+        "correctAnswer": "Cut"
+      },
+      {
+        "question": "All apples are fruits. Some fruits are red. Does it follow that all apples are red?",
+        "options": [
+          "No",
+          "Yes",
+          "Maybe",
+          "Cannot be determined"
+        ],
+        "correctAnswer": "Cannot be determined"
+      },
+      {
+        "question": "What is the relationship in the analogy: Teacher : Student :: Doctor : __?",
+        "options": [
+          "Patient",
+          "Hospital",
+          "Medicine",
+          "Nurse"
+        ],
+        "correctAnswer": "Patient"
+      },
+      {
+        "question": "True or False: If all cars have wheels, then some vehicles have wheels.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      },
+      {
+        "question": "All students study. John studies. Does it follow that John is a student?",
+        "options": [
+          "No",
+          "Yes",
+          "Maybe",
+          "Cannot be determined"
+        ],
+        "correctAnswer": "Cannot be determined"
+      },
+      {
+        "question": "Complete the analogy: Hot : Cold :: Light : __",
+        "options": [
+          "Dark",
+          "Bright",
+          "Shadow",
+          "Sun"
+        ],
+        "correctAnswer": "Dark"
+      },
+      {
+        "question": "All trees have leaves. Some leaves are green. Does it follow that some trees are green?",
+        "options": [
+          "Cannot be determined",
+          "Yes",
+          "No",
+          "Maybe"
+        ],
+        "correctAnswer": "Cannot be determined"
+      },
+      {
+        "question": "What does deductive reasoning involve?",
+        "options": [
+          "Drawing specific conclusions from general statements",
+          "Making guesses from observations",
+          "Creating new theories",
+          "Finding patterns in numbers"
+        ],
+        "correctAnswer": "Drawing specific conclusions from general statements"
+      }
+    ]
+  }

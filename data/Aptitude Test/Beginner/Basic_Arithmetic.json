@@ -1,0 +1,159 @@
+{
+  "category": "Aptitude Tests",
+    "title": "Basic Arithmetic",
+    "level": "Beginner",
+    "Difficulty": "Easy",
+    "timer": "10 minutes",
+    "questions": [
+      {
+        "question": "What is 8 + 5?",
+        "options": [
+          "13",
+          "12",
+          "15",
+          "10"
+        ],
+        "correctAnswer": "13"
+      },
+      {
+        "question": "What is 15 - 7?",
+        "options": [
+          "8",
+          "9",
+          "7",
+          "6"
+        ],
+        "correctAnswer": "8"
+      },
+      {
+        "question": "What is 6 × 4?",
+        "options": [
+          "24",
+          "20",
+          "28",
+          "18"
+        ],
+        "correctAnswer": "24"
+      },
+      {
+        "question": "What is 20 ÷ 5?",
+        "options": [
+          "4",
+          "5",
+          "3",
+          "6"
+        ],
+        "correctAnswer": "4"
+      },
+      {
+        "question": "What is 25% of 80?",
+        "options": [
+          "20",
+          "25",
+          "15",
+          "30"
+        ],
+        "correctAnswer": "20"
+      },
+      {
+        "question": "What is the value of 1/2 as a decimal?",
+        "options": [
+          "0.5",
+          "0.25",
+          "0.75",
+          "1.0"
+        ],
+        "correctAnswer": "0.5"
+      },
+      {
+        "question": "True or False: 3/4 is equal to 0.75.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      },
+      {
+        "question": "What does BODMAS stand for?",
+        "options": [
+          "Brackets, Orders, Division, Multiplication, Addition, Subtraction",
+          "Brackets, Operations, Division, Multiplication, Addition, Subtraction",
+          "Basic Operations, Division, Multiplication, Addition, Subtraction",
+          "Brackets, Orders, Division, Multiplication, Arithmetic, Subtraction"
+        ],
+        "correctAnswer": "Brackets, Orders, Division, Multiplication, Addition, Subtraction"
+      },
+      {
+        "question": "What is the value of 2 + 3 × 4?",
+        "options": [
+          "14",
+          "20",
+          "15",
+          "12"
+        ],
+        "correctAnswer": "14"
+      },
+      {
+        "question": "What is 10% of 50?",
+        "options": [
+          "5",
+          "10",
+          "15",
+          "20"
+        ],
+        "correctAnswer": "5"
+      },
+      {
+        "question": "What is the value of 5 + 6 ÷ 2?",
+        "options": [
+          "8",
+          "11",
+          "13",
+          "9"
+        ],
+        "correctAnswer": "8"
+      },
+      {
+        "question": "True or False: 0.6 is the same as 6/10.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      },
+      {
+        "question": "What is 1/3 of 12?",
+        "options": [
+          "4",
+          "3",
+          "6",
+          "2"
+        ],
+        "correctAnswer": "4"
+      },
+      {
+        "question": "What is the first operation to perform in 4 + 2 × (3 - 1)?",
+        "options": [
+          "Subtraction",
+          "Multiplication",
+          "Addition",
+          "Division"
+        ],
+        "correctAnswer": "Subtraction"
+      },
+      {
+        "question": "What is 0.25 as a fraction?",
+        "options": [
+          "1/4",
+          "1/2",
+          "1/5",
+          "2/5"
+        ],
+        "correctAnswer": "1/4"
+      }
+    ]
+  }

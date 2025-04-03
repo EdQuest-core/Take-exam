@@ -1,0 +1,311 @@
+{
+  "category": "Aptitude Tests",
+    "title": "Time, Speed, and Distance",
+    "level": "Advanced",
+    "Difficulty": "Hard",
+    "timer": "30 minutes",
+    "totalQuestions": "30 questions",
+    "description":"This aptitude test assesses advanced Time Speed and Distance concepts within a 30-minute timeframe. It focuses on calculating average and relative speeds, and solving intricate motion problems involving trains, boats, and circular paths, requiring formula application and scenario evaluation.",
+    "questions": [
+      {
+        "question": "Scenario: A car travels 100 km at 50 km/h and 200 km at 100 km/h. Evaluate: Which route is more efficient for average speed?",
+        "options": [
+          "200 km at 100 km/h",
+          "100 km at 50 km/h",
+          "Both are equal",
+          "Cannot determine"
+        ],
+        "correctAnswer": "200 km at 100 km/h"
+      },
+      {
+        "question": "What is the average speed for a 60 km trip if half is at 40 km/h and half at 60 km/h?",
+        "options": [
+          "48 km/h",
+          "50 km/h",
+          "45 km/h",
+          "52 km/h"
+        ],
+        "correctAnswer": "48 km/h"
+      },
+      {
+        "question": "Create: What formula gives the time when two trains moving in opposite directions at 60 km/h and 40 km/h meet if 200 km apart?",
+        "options": [
+          "200 / (60 + 40)",
+          "200 / (60 - 40)",
+          "200 / 60",
+          "200 / 40"
+        ],
+        "correctAnswer": "200 / (60 + 40)"
+      },
+      {
+        "question": "Scenario: Two cars start 300 km apart and travel toward each other at 50 km/h and 70 km/h. When will they meet?",
+        "options": [
+          "2.5 hours",
+          "3 hours",
+          "2 hours",
+          "4 hours"
+        ],
+        "correctAnswer": "2.5 hours"
+      },
+      {
+        "question": "A train 100 m long passes a pole in 5 seconds. What is its speed?",
+        "options": [
+          "20 m/s",
+          "25 m/s",
+          "15 m/s",
+          "10 m/s"
+        ],
+        "correctAnswer": "20 m/s"
+      },
+      {
+        "question": "Evaluate: Why is relative speed used for objects moving in opposite directions?",
+        "options": [
+          "It accounts for combined closing speed",
+          "It reduces distance",
+          "It ignores time",
+          "It simplifies acceleration"
+        ],
+        "correctAnswer": "It accounts for combined closing speed"
+      },
+      {
+        "question": "Scenario: A boat travels 12 km upstream in 2 hours and 12 km downstream in 1 hour. What is the stream speed?",
+        "options": [
+          "2 km/h",
+          "3 km/h",
+          "4 km/h",
+          "1 km/h"
+        ],
+        "correctAnswer": "2 km/h"
+      },
+      {
+        "question": "What is the time taken to cover 240 km at 80 km/h?",
+        "options": [
+          "3 hours",
+          "4 hours",
+          "2 hours",
+          "5 hours"
+        ],
+        "correctAnswer": "3 hours"
+      },
+      {
+        "question": "Create: How would you calculate the relative speed of two cars moving in the same direction at 60 km/h and 40 km/h?",
+        "options": [
+          "60 - 40",
+          "60 + 40",
+          "60 / 40",
+          "40 - 60"
+        ],
+        "correctAnswer": "60 - 40"
+      },
+      {
+        "question": "Scenario: A man runs 400 m in a circle at 8 m/s. How many laps in 5 minutes?",
+        "options": [
+          "15",
+          "12",
+          "10",
+          "18"
+        ],
+        "correctAnswer": "15"
+      },
+      {
+        "question": "A train crosses a 200 m bridge in 20 seconds at 10 m/s. What is its length?",
+        "options": [
+          "100 m",
+          "200 m",
+          "150 m",
+          "50 m"
+        ],
+        "correctAnswer": "100 m"
+      },
+      {
+        "question": "Evaluate: Why is average speed not the arithmetic mean of two speeds over equal distances?",
+        "options": [
+          "Time varies inversely with speed",
+          "Distance cancels out",
+          "Speed is constant",
+          "It ignores direction"
+        ],
+        "correctAnswer": "Time varies inversely with speed"
+      },
+      {
+        "question": "Scenario: Two runners on a 1 km circular track start opposite each other at 5 m/s and 3 m/s. When do they first meet?",
+        "options": [
+          "125 seconds",
+          "100 seconds",
+          "150 seconds",
+          "200 seconds"
+        ],
+        "correctAnswer": "125 seconds"
+      },
+      {
+        "question": "What is the relative speed of two objects moving in opposite directions at 15 m/s and 25 m/s?",
+        "options": [
+          "40 m/s",
+          "10 m/s",
+          "20 m/s",
+          "30 m/s"
+        ],
+        "correctAnswer": "40 m/s"
+      },
+      {
+        "question": "Create: What formula gives the distance covered at average speed S over time T?",
+        "options": [
+          "S × T",
+          "S / T",
+          "T / S",
+          "S + T"
+        ],
+        "correctAnswer": "S × T"
+      },
+      {
+        "question": "Scenario: A car travels 50 km at 25 km/h and returns at 50 km/h. What’s the average speed?",
+        "options": [
+          "33.33 km/h",
+          "37.5 km/h",
+          "40 km/h",
+          "30 km/h"
+        ],
+        "correctAnswer": "33.33 km/h"
+      },
+      {
+        "question": "A boat’s speed in still water is 10 km/h, and the river flows at 2 km/h. What’s its upstream speed?",
+        "options": [
+          "8 km/h",
+          "12 km/h",
+          "10 km/h",
+          "6 km/h"
+        ],
+        "correctAnswer": "8 km/h"
+      },
+      {
+        "question": "Evaluate: Why does circular motion complicate meeting time calculations?",
+        "options": [
+          "Relative positions repeat",
+          "Speed doubles",
+          "Distance is fixed",
+          "Time is constant"
+        ],
+        "correctAnswer": "Relative positions repeat"
+      },
+      {
+        "question": "Scenario: Two trains 150 m and 200 m long pass each other in 10 seconds at 20 m/s and 15 m/s. Are they moving in opposite directions?",
+        "options": [
+          "Yes",
+          "No",
+          "Maybe",
+          "Cannot determine"
+        ],
+        "correctAnswer": "Yes"
+      },
+      {
+        "question": "Create: How would you find the time for two objects 100 km apart moving toward each other at 20 km/h and 30 km/h?",
+        "options": [
+          "100 / (20 + 30)",
+          "100 / (20 - 30)",
+          "100 / 20",
+          "100 / 30"
+        ],
+        "correctAnswer": "100 / (20 + 30)"
+      },
+      {
+        "question": "What is the speed if a 300 m train crosses a 200 m platform in 25 seconds?",
+        "options": [
+          "20 m/s",
+          "25 m/s",
+          "15 m/s",
+          "10 m/s"
+        ],
+        "correctAnswer": "20 m/s"
+      },
+      {
+        "question": "Scenario: A man walks 4 km/h and runs 6 km/h. What’s his average speed for 12 km if he walks half and runs half?",
+        "options": [
+          "4.8 km/h",
+          "5 km/h",
+          "4.5 km/h",
+          "6 km/h"
+        ],
+        "correctAnswer": "4.8 km/h"
+      },
+      {
+        "question": "What is the relative speed of two cars moving in the same direction at 80 km/h and 60 km/h?",
+        "options": [
+          "20 km/h",
+          "140 km/h",
+          "10 km/h",
+          "40 km/h"
+        ],
+        "correctAnswer": "20 km/h"
+      },
+      {
+        "question": "Evaluate: Why is downstream speed higher than upstream?",
+        "options": [
+          "Current adds to boat speed",
+          "Distance increases",
+          "Time decreases",
+          "Speed doubles"
+        ],
+        "correctAnswer": "Current adds to boat speed"
+      },
+      {
+        "question": "Create: What formula gives the time for a train to pass a man if its length is L and speed is S?",
+        "options": [
+          "L / S",
+          "S / L",
+          "L × S",
+          "S + L"
+        ],
+        "correctAnswer": "L / S"
+      },
+      {
+        "question": "Scenario: A cyclist covers 20 km at 10 km/h and 30 km at 15 km/h. What’s the total time?",
+        "options": [
+          "4 hours",
+          "3 hours",
+          "5 hours",
+          "2 hours"
+        ],
+        "correctAnswer": "4 hours"
+      },
+      {
+        "question": "A train crosses a 100 m pole in 4 seconds at 25 m/s. What’s its length?",
+        "options": [
+          "100 m",
+          "200 m",
+          "150 m",
+          "50 m"
+        ],
+        "correctAnswer": "100 m"
+      },
+      {
+        "question": "Scenario: Two objects 50 km apart move in the same direction at 20 km/h and 10 km/h. When will the faster catch up?",
+        "options": [
+          "5 hours",
+          "4 hours",
+          "6 hours",
+          "3 hours"
+        ],
+        "correctAnswer": "5 hours"
+      },
+      {
+        "question": "Evaluate: Why is average speed critical in multi-leg journeys?",
+        "options": [
+          "It accounts for varying times",
+          "It ignores distance",
+          "It simplifies speed",
+          "It doubles time"
+        ],
+        "correctAnswer": "It accounts for varying times"
+      },
+      {
+        "question": "Create: How would you find the average speed for 60 km at 30 km/h and 40 km at 20 km/h?",
+        "options": [
+          "100 / (60/30 + 40/20)",
+          "50 / (30 + 20)",
+          "60 / 30",
+          "40 / 20"
+        ],
+        "correctAnswer": "100 / (60/30 + 40/20)"
+      }
+    ]
+  }

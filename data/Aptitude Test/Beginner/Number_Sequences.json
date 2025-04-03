@@ -1,0 +1,159 @@
+{
+  "category": "Aptitude Tests",
+    "title": "Number Sequences",
+    "level": "Beginner",
+    "Difficulty": "Hard",
+    "timer": "10 minutes",
+    "questions": [
+      {
+        "question": "What is the next number in the sequence: 2, 4, 6, 8, __?",
+        "options": [
+          "10",
+          "12",
+          "9",
+          "11"
+        ],
+        "correctAnswer": "10"
+      },
+      {
+        "question": "What is the next number in the sequence: 1, 3, 5, 7, __?",
+        "options": [
+          "9",
+          "8",
+          "10",
+          "11"
+        ],
+        "correctAnswer": "9"
+      },
+      {
+        "question": "What is the rule for the sequence: 5, 10, 15, 20?",
+        "options": [
+          "Add 5",
+          "Multiply by 2",
+          "Add 10",
+          "Subtract 5"
+        ],
+        "correctAnswer": "Add 5"
+      },
+      {
+        "question": "What is the next number in the sequence: 2, 4, 8, 16, __?",
+        "options": [
+          "32",
+          "24",
+          "18",
+          "20"
+        ],
+        "correctAnswer": "32"
+      },
+      {
+        "question": "True or False: The sequence 3, 6, 9, 12 is an arithmetic sequence.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      },
+      {
+        "question": "What is the next number in the sequence: 1, 2, 4, 7, __?",
+        "options": [
+          "11",
+          "10",
+          "9",
+          "12"
+        ],
+        "correctAnswer": "11"
+      },
+      {
+        "question": "What is the common difference in the sequence: 10, 13, 16, 19?",
+        "options": [
+          "3",
+          "4",
+          "2",
+          "5"
+        ],
+        "correctAnswer": "3"
+      },
+      {
+        "question": "What is the next number in the sequence: 1, 5, 9, 13, __?",
+        "options": [
+          "17",
+          "15",
+          "16",
+          "18"
+        ],
+        "correctAnswer": "17"
+      },
+      {
+        "question": "What is the pattern in the sequence: 2, 4, 6, 8?",
+        "options": [
+          "Even numbers",
+          "Odd numbers",
+          "Multiples of 3",
+          "Squares"
+        ],
+        "correctAnswer": "Even numbers"
+      },
+      {
+        "question": "True or False: The sequence 2, 4, 8, 16 is a geometric sequence.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      },
+      {
+        "question": "What is the next number in the sequence: 10, 20, 30, 40, __?",
+        "options": [
+          "50",
+          "45",
+          "60",
+          "55"
+        ],
+        "correctAnswer": "50"
+      },
+      {
+        "question": "What is the common ratio in the sequence: 3, 6, 12, 24?",
+        "options": [
+          "2",
+          "3",
+          "4",
+          "1"
+        ],
+        "correctAnswer": "2"
+      },
+      {
+        "question": "What is the sum of the first 4 terms in the sequence: 1, 2, 3, 4?",
+        "options": [
+          "10",
+          "12",
+          "8",
+          "14"
+        ],
+        "correctAnswer": "10"
+      },
+      {
+        "question": "What is the next number in the sequence: 5, 10, 20, 40, __?",
+        "options": [
+          "80",
+          "60",
+          "50",
+          "70"
+        ],
+        "correctAnswer": "80"
+      },
+      {
+        "question": "True or False: The sequence 1, 4, 9, 16 consists of square numbers.",
+        "options": [
+          "true",
+          "false",
+          "error",
+          "none"
+        ],
+        "correctAnswer": "true"
+      }
+    ]
+  }
