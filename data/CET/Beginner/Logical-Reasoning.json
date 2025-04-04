@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Hard",
     "timer": "10 minutes",
+    "skill": "20%",
+    "knowledge": "50%",
+    "application": "60%",
+    "why":"This exam explores basic logical reasoning skills. It assesses your ability to identify patterns in sequences, understand analogies, draw logical conclusions from given statements, and solve simple spatial reasoning problems. Success in this exam reflects your capacity to think logically and analytically.",
     "questions": [
       {
         "question": "What is the next number in the sequence: 2, 4, 6, 8, …?",

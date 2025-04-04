@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Medium",
     "timer": "10 minutes",
+    "skill": "50%",
+    "knowledge": "70%",
+    "application": "80%",
+    "why":"This exam introduces basic algebraic concepts and techniques. It tests your ability to solve simple algebraic equations, factorize expressions, understand exponents, and apply algebraic identities. Success in this exam indicates a foundational understanding of algebraic principles.",
     "questions": [
       {
         "question": "What is the quadratic formula?",

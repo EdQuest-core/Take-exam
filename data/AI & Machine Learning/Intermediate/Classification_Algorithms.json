@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Easy",
     "timer": "20 minutes",
+    "skill": "50%",
+    "knowledge": "40%",
+    "application": "60%",
+    "why":"This exam on Classification Algorithms assesses your understanding of key concepts and their practical application in machine learning. It tests your ability to choose the right algorithm for specific scenarios, understand the nuances between logistic regression, decision trees, and k-nearest neighbors (KNN), and evaluate their strengths and weaknesses. Taking this exam helps you solidify your knowledge of classification techniques and their relevance in real-world predictive modeling.",
     "questions": [
       {
         "question": "Scenario: You need to predict whether a customer will buy a product (yes/no). Which algorithm is best suited?",

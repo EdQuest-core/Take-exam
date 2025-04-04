@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Hard",
     "timer": "10 minutes",
+    "skill": "60%",
+    "knowledge": "50%",
+    "application": "80%",
+    "why":"This Number Sequences exam assesses your ability to identify and apply patterns within numerical sequences. It evaluates your skills in recognizing arithmetic, geometric, and other logical progressions, as well as your capacity to deduce rules and predict subsequent terms. Taking this exam helps you enhance your problem-solving abilities and analytical thinking, which are essential for various cognitive tasks and real-world applications.",
     "questions": [
       {
         "question": "What is the next number in the sequence: 2, 4, 6, 8, __?",

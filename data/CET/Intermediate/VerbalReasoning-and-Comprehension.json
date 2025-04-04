@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Hard",
     "timer": "20 minutes",
+    "skill": "60%",
+    "knowledge": "55%",
+    "application": "30%",
+    "why":"This exam focuses on verbal reasoning and comprehension skills. It tests your ability to understand and apply vocabulary, arrange words in logical sequences, deduce meaning from passages, and analyze the implications of given statements. Success in this exam reflects your capacity to think critically and analytically about language and its use.",
     "questions": [
       {
         "question": "Scenario: 'She was ___ after running.' Apply: Choose the best word.",

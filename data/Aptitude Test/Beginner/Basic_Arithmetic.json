@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Easy",
     "timer": "10 minutes",
+    "skill": "50%",
+    "knowledge": "40%",
+    "application": "60%",
+    "why":"This Basic Arithmetic exam is designed to assess your fundamental mathematical skills, including addition, subtraction, multiplication, division, percentages, and fractions. It evaluates your ability to perform these operations accurately and apply them in simple calculations. Taking this exam helps you gauge your basic numerical proficiency, which is essential for everyday problem-solving and foundational for more advanced mathematical concepts.",
     "questions": [
       {
         "question": "What is 8 + 5?",

@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Medium",
     "timer": "20 minutes",
+    "skill": "50%",
+    "knowledge": "40%",
+    "application": "60%",
+    "why":"This Clustering Techniques exam assesses your understanding of unsupervised learning methods, specifically K-means and hierarchical clustering. It evaluates your ability to choose the appropriate clustering algorithm for different scenarios, understand the underlying principles of each technique, and interpret evaluation metrics like the silhouette score and WCSS. By taking this exam, you can gauge your proficiency in applying clustering techniques to discover hidden patterns and structures within data, which is essential for various applications like customer segmentation and data analysis.",
     "questions": [
       {
         "question": "Scenario: You need to group customers based on purchasing behavior without predefined labels. Which technique should you use?",

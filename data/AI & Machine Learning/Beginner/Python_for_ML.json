@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Hard",
     "timer": "7 minutes",
+    "skill": "50%",
+    "knowledge": "40%",
+    "application": "60%",
+    "why":"The Python for Machine Learning exam tests foundational skills in essential Python libraries (NumPy, Pandas, Scikit-learn) through practical questions focused on data manipulation, model building, and numerical computing - equipping beginners with the core toolkit needed to implement basic machine learning workflows while emphasizing real-world application over theoretical complexity",
     "questions": [
       {
         "question": "What is NumPy primarily used for in Python?",

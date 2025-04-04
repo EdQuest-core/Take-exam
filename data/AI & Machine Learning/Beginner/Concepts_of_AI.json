@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Easy",
     "timer": "10 minutes",
+    "skill": "40%",
+    "knowledge": "30%",
+    "application": "55%",
+    "why":"The Concepts of AI exam introduces foundational artificial intelligence principles through 11 beginner-friendly questions covering core concepts like supervised vs. unsupervised learning, real-world AI applications (voice assistants, recommender systems), and key terminology - providing a clear understanding of how machines simulate human intelligence through labeled data analysis, pattern recognition, and predictive modeling in everyday technologies.",
     "questions": [
       {
         "question": "What does AI stand for?",

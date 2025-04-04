@@ -4,6 +4,10 @@
     "level": "Advanced",
     "Difficulty": "Easy",
     "timer": "30 minutes",
+    "skill": "50%",
+    "knowledge": "60%",
+    "application": "80%",
+    "why":"This exam assesses your proficiency in advanced algebraic and calculus concepts. It evaluates your skills in solving complex equations, understanding matrix operations, applying calculus to optimization and integration, and analyzing limits and series. Success in this exam demonstrates your mastery of fundamental mathematical tools and their applications.",
     "questions": [
       {
         "question": "Scenario: Solve 2x + y = 5, x - y = 1. Evaluate: Matrix method vs. substitution?",

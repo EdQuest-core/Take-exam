@@ -7,6 +7,7 @@
     "skill": "50%",
     "knowledge": "90%",
     "application": "65%",
+    "why":"The Reinforcement Learning exam rigorously tests advanced concepts through scenario-based questions covering MDP formulation, Q-learning optimization, and policy gradient methods equipping candidates to design intelligent agents that solve complex decision-making problems in dynamic environments.",
     "questions": [
       {
         "question": "Scenario: You’re designing an RL agent to navigate a maze. What framework should you use to model the problem?",

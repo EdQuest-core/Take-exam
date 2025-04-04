@@ -4,6 +4,10 @@
     "level": "Advanced",
     "Difficulty": "Medium",
     "timer": "30 minutes",
+    "skill": "70%",
+    "knowledge": "90%",
+    "application": "40%",
+    "why":"This exam challenges your logical and analytical thinking. It tests your ability to solve complex scenarios involving spatial reasoning, family relationships, logical deductions, and data sufficiency. Success in this exam indicates your capacity to analyze information, draw valid conclusions, and apply logical principles to solve intricate problems.",
     "questions": [
       {
         "question": "Scenario: A, B, C sit in a circle. A is left of B. Evaluate: Who’s left of C?",

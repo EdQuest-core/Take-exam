@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Easy",
     "timer": "20 minutes",
+    "skill": "45%",
+    "knowledge": "70%",
+    "application": "35%",
+    "why":"This exam focuses on geometric principles and mensuration calculations. It tests your ability to apply the Pythagorean theorem, calculate areas and volumes of basic shapes, understand coordinate geometry concepts, and analyze the effects of dimensional changes on geometric figures. Success in this exam demonstrates a solid understanding of geometric concepts and their application in practical scenarios.",
     "questions": [
       {
         "question": "Scenario: A right triangle has legs 3 and 4. Apply the Pythagorean theorem to find the hypotenuse.",

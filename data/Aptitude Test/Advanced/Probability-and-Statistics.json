@@ -5,7 +5,10 @@
     "Difficulty": "Medium",
     "timer": "30 minutes",
     "totalQuestions": "30 questions",
-    "description": "Probability and Statistics evaluates your ability to analyze data, calculate probabilities, and apply statistical concepts such as permutations, combinations, and measures of central tendency. The questions test skills in computing likelihoods, comparing strategies, interpreting distributions, and solving real-world problems involving chance and data analysis.",
+    "skill": "55%",
+    "knowledge": "66%",
+    "application": "70%",
+    "why": "Probability and Statistics evaluates your ability to analyze data, calculate probabilities, and apply statistical concepts such as permutations, combinations, and measures of central tendency. The questions test skills in computing likelihoods, comparing strategies, interpreting distributions, and solving real-world problems involving chance and data analysis.",
     "questions": [
       {
         "question": "Scenario: You roll two dice. Which strategy maximizes your chance of getting a sum of 7: rolling once or rolling twice and taking the better outcome?",

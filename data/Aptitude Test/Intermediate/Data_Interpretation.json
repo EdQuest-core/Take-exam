@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Easy",
     "timer": "20 minutes",
+    "skill": "60%",
+    "knowledge": "50%",
+    "application": "80%",
+    "why":"The Data Interpretation exam tests intermediate-level analytical skills through 20 practical questions on extracting insights from charts (bar, pie, line), tables, and datasets - evaluating candidates' ability to calculate percentages, averages, trends, and proportions while interpreting real-world business scenarios like sales growth, budget allocation, and performance metrics.",
     "questions": [
       {
         "question": "Scenario: A bar chart shows sales of 50, 60, and 80 units over 3 months. What is the percentage increase from month 1 to month 2?",

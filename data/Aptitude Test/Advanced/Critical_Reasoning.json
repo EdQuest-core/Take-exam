@@ -5,7 +5,10 @@
     "Difficulty": "Easy",
     "timer": "30 minutes",
     "totalQuestions": "30 questions",
-    "description":"Critical Reasoning assesses your ability to analyze arguments, evaluate evidence, identify assumptions, and draw logical conclusions. The questions test skills such as recognizing valid inferences, strengthening or weakening claims, and spotting flaws in reasoning through real-world scenarios and structured logic problems.",
+    "skill": "60%",
+    "knowledge": "70%",
+    "application": "40%",
+    "why":"Critical Reasoning assesses your ability to analyze arguments, evaluate evidence, identify assumptions, and draw logical conclusions. The questions test skills such as recognizing valid inferences, strengthening or weakening claims, and spotting flaws in reasoning through real-world scenarios and structured logic problems.",
     "questions": [
       {
         "question": "Scenario: 'If it rains, the ground gets wet. The ground is wet.' Evaluate: What assumption makes this imply it rained?",

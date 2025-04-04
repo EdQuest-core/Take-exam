@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Medium",
     "timer": "10 minutes",
+    "skill": "55%",
+    "knowledge": "65%",
+    "application": "50%",
+    "why":"This Logical Reasoning Basics exam assesses your ability to apply fundamental logical principles, including deductive reasoning and analogical thinking. It evaluates your understanding of syllogisms, your capacity to draw valid conclusions from given statements, and your skill in recognizing relationships between concepts. Taking this exam helps you gauge your aptitude for logical analysis, which is crucial for problem-solving and critical thinking in various contexts.",
     "questions": [
       {
         "question": "All dogs are animals. Some animals are brown. Does it follow that some dogs are brown?",

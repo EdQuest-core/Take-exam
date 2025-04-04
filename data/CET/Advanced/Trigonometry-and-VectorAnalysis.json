@@ -4,6 +4,10 @@
     "level": "Advanced",
     "Difficulty": "Hard",
     "timer": "30 minutes",
+    "skill": "20%",
+    "knowledge": "50%",
+    "application": "70%",
+    "why":"This exam evaluates your understanding of advanced trigonometry and vector analysis. It tests your ability to apply trigonometric identities, solve complex trigonometric equations, perform vector operations, and analyze vector relationships in practical contexts. Success in this exam reflects your expertise in these advanced mathematical areas and your ability to apply them in real-world scenarios.",
     "questions": [
       {
         "question": "Scenario: A 5m ladder leans at 60° to ground. Evaluate: Height reached?",

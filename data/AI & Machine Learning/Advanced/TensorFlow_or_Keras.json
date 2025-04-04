@@ -7,6 +7,7 @@
     "skill": "60%",
     "knowledge": "30%",
     "application": "55%",
+    "why":"The TensorFlow/Keras exam tests advanced deep learning implementation skills through 30 practical questions on CNN architecture design (Conv2D, pooling layers), optimization techniques (dropout, batch normalization), and performance tuning (memory management, hyperparameter configuration), equipping candidates to build efficient image processing models that handle real-world challenges like overfitting, varying lighting conditions, and high-resolution inputs using industry-standard frameworks.",
     "questions": [
       {
         "question": "Scenario: You’re designing a CNN in Keras to classify images. Which layer should you add first?",

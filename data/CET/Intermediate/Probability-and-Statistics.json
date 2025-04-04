@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Medium",
     "timer": "20 minutes",
+    "skill": "60%",
+    "knowledge": "50%",
+    "application": "70%",
+    "why":"This exam explores fundamental concepts in probability and statistics. It assesses your ability to calculate probabilities, determine mean, median, and mode, understand permutations and combinations, and interpret data presented in charts and tables. Success in this exam indicates a foundational understanding of statistical and probabilistic principles.",
     "questions": [
       {
         "question": "Scenario: A deck has 52 cards, 13 red. Apply: What’s the probability of drawing a red card?",

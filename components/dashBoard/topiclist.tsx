@@ -154,7 +154,7 @@ const ProblemList: React.FC = () => {
               return (
                 <React.Fragment key={problem.id}>
                   <div 
-                    className="relative group flex justify-between items-center px-6 py-2 cursor-pointer" 
+                    className="relative group flex justify-between items-center px-6 py-4 cursor-pointer" 
                     onClick={() => handleProblemClick(problem)}
                   >
                     <div className="absolute left-2 right-2 h-12 top-1/2 -translate-y-1/2 bg-white opacity-0 

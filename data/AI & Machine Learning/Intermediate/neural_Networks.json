@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Hard",
     "timer": "20 minutes",
+    "skill": "50%",
+    "knowledge": "40%",
+    "application": "60%",
+    "why":"This Introduction to Neural Networks exam is designed to assess your foundational understanding of neural network components and training processes. It focuses on evaluating your grasp of perceptrons, activation functions, and backpropagation, and your ability to apply these concepts in practical scenarios. Taking this exam helps you solidify your knowledge of how neural networks learn and make predictions, which is crucial for building and understanding complex machine learning models.",
     "questions": [
       {
         "question": "Scenario: You need a simple model to classify data as positive or negative based on a linear boundary. Which neural network component should you use?",

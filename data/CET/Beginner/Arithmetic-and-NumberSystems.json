@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Easy",
     "timer": "10 minutes",
+    "skill": "20%",
+    "knowledge": "50%",
+    "application": "70%",
+    "why":"This exam focuses on fundamental arithmetic operations and number system concepts. It evaluates your ability to perform basic calculations, understand number properties like prime numbers and HCF/LCM, and convert between fractions and decimals. Success in this exam demonstrates a solid grasp of elementary mathematical skills.",
     "questions": [
       {
         "question": "What is the HCF of 12 and 18?",

@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Medium",
     "timer": "20 minutes",
+    "skill": "70%",
+    "knowledge": "40%",
+    "application": "30%",
+    "why":"The Puzzles and Arrangements exam tests intermediate-level combinatorial reasoning through 20 challenging permutation problems - evaluating candidates' ability to calculate linear/circular arrangements, apply seating constraints (adjacency, positioning), and solve real-world ordering scenarios while distinguishing between absolute and relative positioning requirements.",
     "questions": [
       {
         "question": "Scenario: Arrange 5 people (A, B, C, D, E) in a row. A must sit next to B. How many valid arrangements are there?",

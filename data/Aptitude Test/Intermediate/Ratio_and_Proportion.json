@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Hard",
     "timer": "20 minutes",
+    "skill": "30%",
+    "knowledge": "65%",
+    "application": "50%",
+    "why":"This Ratio and Proportion exam assesses your ability to understand and apply concepts of ratios and proportions in various scenarios. It evaluates your skills in simplifying ratios, solving proportion problems, and analyzing direct and inverse variations. Taking this exam helps you enhance your mathematical reasoning and problem-solving abilities, which are crucial for various real-world applications involving comparative quantities.",
     "questions": [
       {
         "question": "Scenario: Split $120 in the ratio 2:3. How much does the smaller part get?",

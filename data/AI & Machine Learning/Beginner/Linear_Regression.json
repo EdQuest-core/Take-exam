@@ -4,6 +4,10 @@
     "level": "Beginner",
     "Difficulty": "Medium",
     "timer": "10 minutes",
+    "skill": "20%",
+    "knowledge": "40%",
+    "application": "70%",
+    "why":"The Linear Regression exam introduces fundamental machine learning concepts through 15 practical questions, covering the algorithm's core components (slope, intercept), optimization techniques (gradient descent, cost functions), and real-world applications (price prediction) - providing beginners with a solid foundation in this essential predictive modeling technique while emphasizing practical implementation over theoretical complexity.",
     "questions": [
       {
         "question": "What is the primary goal of linear regression?",

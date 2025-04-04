@@ -7,6 +7,7 @@
     "skill": "40%",
     "knowledge": "60%",
     "application": "35%",
+    "why":"The Natural Language Processing (NLP) exam evaluates advanced understanding of text processing through targeted questions covering tokenization techniques (WordPiece, subword), embedding models (Word2Vec, transformers), and practical pipeline design equipping candidates to implement solutions from preprocessing to contextual language understanding.",
     "questions": [
       {
         "question": "Scenario: You’re preprocessing text for sentiment analysis. What is the first step you should take?",

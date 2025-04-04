@@ -5,7 +5,10 @@
     "Difficulty": "Hard",
     "timer": "30 minutes",
     "totalQuestions": "30 questions",
-    "description":"This aptitude test assesses advanced Time Speed and Distance concepts within a 30-minute timeframe. It focuses on calculating average and relative speeds, and solving intricate motion problems involving trains, boats, and circular paths, requiring formula application and scenario evaluation.",
+    "skill": "80%",
+    "knowledge": "50%",
+    "application": "20%",
+    "why":"This aptitude test assesses advanced Time Speed and Distance concepts within a 30-minute timeframe. It focuses on calculating average and relative speeds, and solving intricate motion problems involving trains, boats, and circular paths, requiring formula application and scenario evaluation.",
     "questions": [
       {
         "question": "Scenario: A car travels 100 km at 50 km/h and 200 km at 100 km/h. Evaluate: Which route is more efficient for average speed?",
