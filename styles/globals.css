@@ -1,0 +1,41 @@
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f0f0f0; /* Light grey track */
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #FFCC66; /* Scrollbar color */
+  border-radius: 8px;
+  border: 2px solid #f0f0f0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #e0b855;
+}
+
+/* Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #FFCC66 #f0f0f0;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #333;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #FFCC66;
+    border: 2px solid #333;
+  }
+
+  .custom-scrollbar {
+    scrollbar-color: #FFCC66 #333;
+  }
+}
