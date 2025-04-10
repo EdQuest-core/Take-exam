@@ -234,8 +234,9 @@ const Description = () => {
 
   // If showTestPage is true, render the TestPage component
   if (showTestPage && examData) {
-    return <TestPage />
+    return <TestPage title={examData.title} category={examData.category} />
   }
+  
 
   // Parse the percentage values
   const skillPercent = examData?.skill ? parsePercentage(examData.skill) : 0

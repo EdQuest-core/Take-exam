@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { useState, useEffect } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 import ThemeToggle from "./themeToggle"
 import { toast, Toaster } from "sonner"
 
@@ -350,13 +350,13 @@ function ExamSidebar({
   )
 }
 
-export default function Exam2() {
-  const searchParams = useSearchParams()
+type Props = {
+  title: string
+  category: string
+}
+export default function Exam2({ title, category }: Props) {
   const router = useRouter()
-  const category = decodeURIComponent(
-    searchParams?.get("category") || ""
-  ).trim()
-  const title = decodeURIComponent(searchParams?.get("title") || "").trim()
+
 
   const [startTime, setStartTime] = useState<number>(0)
   const [examData, setExamData] = useState<ExamData | null>(null)

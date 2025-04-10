@@ -10,9 +10,9 @@ const TestPage = () => {
 
   return (
     <div className="min-h-screen">
-      <Exam />
+      <Exam title={title} category={category} />
     </div>
-  );
-};
+  )
+};  
 
 export default TestPage;
