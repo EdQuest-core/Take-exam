@@ -4,6 +4,11 @@
     "level": "Intermediate",
     "Difficulty": "Hard",
     "timer": "20 minutes",
+    "skill": "35%",
+    "knowledge": "40%",
+    "application": "25%",
+    "why": "This Stacks and Queues module focuses on mastering core linear data structures used in recursion, parsing, and scheduling. It tests the ability to apply abstract data types in coding challenges and interview scenarios involving expression evaluation, balancing problems, and BFS.",
+
     "questions": [
       {
         "question": "Scenario: You need to reverse a string 'hello' using a stack. After pushing all characters and popping them, what will the result be?",

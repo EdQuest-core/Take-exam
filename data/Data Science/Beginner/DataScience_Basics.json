@@ -4,6 +4,11 @@
     "level": "Beginner",
     "Difficulty": "Medium",
     "timer": "10 minutes",
+    "skill": "35%",
+    "knowledge": "55%",
+    "application": "10%",
+    "why": "This assessment builds foundational knowledge in data science concepts such as structured and unstructured data, data types, and the data lifecycle. It aids learners in recognizing tools and practices widely used in real-world data workflows.",
+
     "questions": [
       {
         "question": "What is data science?",

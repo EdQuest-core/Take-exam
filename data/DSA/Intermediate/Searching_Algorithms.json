@@ -4,6 +4,10 @@
     "level": "Intermediate",
     "Difficulty": "Medium",
     "timer": "20 minutes",
+    "skill": "25%",
+    "knowledge": "45%",
+    "application": "30%",
+    "why": "This Searching Algorithms module emphasizes the efficiency of different search techniques like linear and binary search, their time/space complexities, and real-world application. It prepares candidates to analyze performance and make optimal algorithm choices in technical interviews.",
     "questions": [
       {
         "question": "Scenario: You perform a linear search on the array [3, 5, 1, 9] for 1. How many comparisons are needed?",

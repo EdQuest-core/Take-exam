@@ -4,6 +4,11 @@
     "level": "Advanced",
     "Difficulty": "Easy",
     "timer": "30 minutes",
+    "skill": "40%",
+    "knowledge": "40%",
+    "application": "20%",
+    "why": "This Advanced Machine Learning exam tests core skills in evaluating and optimizing ML models like Random Forest and Gradient Boosting, tuning hyperparameters, identifying overfitting/underfitting, and applying clustering and validation techniques. It emphasizes hands-on decision-making in real-world ML scenarios to build robust predictive models and ensure performance across varied datasets.",
+
     "questions": [
       {
         "question": "Scenario: You’re classifying spam emails. Evaluate: Random Forest vs. Gradient Boosting for high accuracy?",

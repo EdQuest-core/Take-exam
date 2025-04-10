@@ -4,6 +4,11 @@
     "level": "Intermediate",
     "Difficulty": "Medium",
     "timer": "20 minutes",
+    "skill": "35%",
+    "knowledge": "50%",
+    "application": "15%",
+    "why": "This assessment strengthens the ability to explore and interpret datasets using techniques such as correlation, distribution analysis, and visualization. It encourages critical thinking and pattern recognition for effective hypothesis generation before modeling.",
+
     "questions": [
       {
         "question": "Scenario: You have variables 'Height' and 'Weight'. How do you measure their relationship?",

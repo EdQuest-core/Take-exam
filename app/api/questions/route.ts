@@ -99,7 +99,7 @@ function getAllProblems(dataDir: string): Problem[] {
   const categoryMapping: Record<string, string> = {
     "data-science": "Data Science",
     "ai-&-machine-learning": "AI & Machine Learning",
-    "aptitude-tests": "Aptitude Test",
+    // "aptitude-test": "Aptitude Test",
     "cet": "CET",
     "dsa": "DSA",
     "interview-preparation": "Interview Preparation",

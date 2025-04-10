@@ -72,7 +72,6 @@ export async function GET(req: NextRequest) {
       level: content.level || "Intermediate",
       difficulty: content.difficulty || content.Difficulty || "Medium",
       category: problem.category,
-      description: content.description || "No description available.",
       timer: timerValue,
       totalQuestions: content.questions?.length || 0,
       skill: content.skill || "0%",
@@ -113,7 +112,7 @@ function getAllProblems(dataDir: string): Problem[] {
   const categoryMapping: Record<string, string> = {
     "data-science": "Data Science",
     "ai-&-machine-learning": "AI & Machine Learning",
-    "aptitude-tests": "Aptitude Test",
+    // "aptitude-test": "Aptitude Test",
     "cet": "CET",
     "dsa": "DSA",
     "interview-preparation": "Interview Preparation",

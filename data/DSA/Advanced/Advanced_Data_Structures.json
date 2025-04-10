@@ -4,6 +4,11 @@
     "level": "Advanced",
     "Difficulty": "Easy",
     "timer": "30 minutes",
+    "skill": "30%",
+    "knowledge": "45%",
+    "application": "25%",
+    "why": "This Advanced Data Structures module builds a deep understanding of efficient data organization and retrieval mechanisms using AVL trees, heaps, tries, and hash tables. It evaluates theoretical insights and real-world use cases such as autocomplete, top-k elements, and priority queues critical for system-level design and optimization in interviews.",
+
     "questions": [
       {
         "question": "What is the time complexity of searching in a balanced BST?",

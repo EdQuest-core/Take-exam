@@ -4,6 +4,10 @@
     "level": "Advanced",
     "Difficulty": "Hard",
     "timer": "30 minutes",
+    "skill": "30%",
+    "knowledge": "40%",
+    "application": "30%",
+    "why": "This Graph Algorithms module emphasizes core graph traversal, shortest path algorithms, and minimum spanning trees. It blends theoretical graph properties with practical algorithmic applications like BFS, Dijkstra’s, and Bellman-Ford—preparing candidates for system design, routing problems, and graph-based coding interviews.",
     "questions": [
       {
         "question": "Which graph representation is best for a dense graph?",

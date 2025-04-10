@@ -4,6 +4,11 @@
     "level": "Intermediate",
     "Difficulty": "Hard",
     "timer": "20 minutes",
+    "skill": "50%",
+    "knowledge": "35%",
+    "application": "15%",
+    "why": "This quiz introduces core machine learning concepts including supervised and unsupervised learning, regression, classification, error metrics, and model evaluation. It builds conceptual understanding and practical reasoning around real-world ML tasks.",
+
     "questions": [
       {
         "question": "Scenario: You predict house prices with size as a feature. What’s the best method?",

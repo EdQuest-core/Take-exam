@@ -4,6 +4,11 @@
     "level": "Beginner",
     "Difficulty": "Medium",
     "timer": "10 minutes",
+    "skill": "45%",
+    "knowledge": "40%",
+    "application": "15%",
+    "why": "This Linked Lists exam evaluates fundamental understanding and practical manipulation of dynamic data structures, emphasizing pointer-based node relationships, traversal, and complexity analysis. It prepares candidates to handle memory-efficient structures used in real-world systems like queues, stacks, and dynamic memory allocation.",
+
     "questions": [
       {
         "question": "What is a singly linked list?",

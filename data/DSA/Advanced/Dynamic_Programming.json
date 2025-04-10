@@ -4,6 +4,10 @@
     "level": "Advanced",
     "Difficulty": "Medium",
     "timer": "30 minutes",
+    "skill": "25%",
+    "knowledge": "35%",
+    "application": "40%",
+    "why": "This Dynamic Programming module develops problem-solving skills through optimal substructure, memoization, and tabulation. It targets application-heavy coding patterns like LCS, knapsack, and matrix chain multiplication, empowering candidates to tackle overlapping subproblem scenarios in technical interviews efficiently.",
     "questions": [
       {
         "question": "What is the key feature of overlapping subproblems in DP?",

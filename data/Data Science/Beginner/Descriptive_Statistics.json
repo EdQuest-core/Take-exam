@@ -4,6 +4,11 @@
     "level": "Beginner",
     "Difficulty": "Hard",
     "timer": "10 minutes",
+    "skill": "45%",
+    "knowledge": "40%",
+    "application": "15%",
+    "why": "This quiz helps learners understand core statistical measures like mean, median, mode, range, and standard deviation. It encourages conceptual clarity and computational ability for analyzing data distributions effectively.",
+
     "questions": [
       {
         "question": "What is the formula for the mean of a dataset?",

@@ -4,6 +4,11 @@
     "level": "Advanced",
     "Difficulty": "Medium",
     "timer": "30 minutes",
+    "skill": "35%",
+    "knowledge": "45%",
+    "application": "20%",
+    "why": "This Big Data and Scalable Systems quiz assesses your understanding of distributed systems, real-time data pipelines, and processing frameworks like Spark and Hadoop. It emphasizes designing scalable workflows, parallel computing, and system performance evaluation, helping learners prepare for engineering roles that involve managing large datasets and building cloud-native solutions.",
+
     "questions": [
       {
         "question": "Scenario: Process a 1TB dataset. Evaluate: Spark vs. Hadoop for speed?",

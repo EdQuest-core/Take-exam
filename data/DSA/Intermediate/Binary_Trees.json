@@ -4,6 +4,11 @@
     "level": "Intermediate",
     "Difficulty": "Easy",
     "timer": "20 minutes",
+    "skill": "30%",
+    "knowledge": "50%",
+    "application": "20%",
+    "why": "This Binary Trees module strengthens understanding of hierarchical data structures, focusing on traversal techniques, tree properties, and the behavior of binary search trees. It evaluates both conceptual knowledge and the application of tree-based problem-solving strategies common in technical interviews.",
+
     "questions": [
       {
         "question": "Scenario: For a binary tree with nodes [5, 3, 7], what is the inorder traversal output?",

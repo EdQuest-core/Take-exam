@@ -4,6 +4,11 @@
     "level": "Beginner",
     "Difficulty": "Hard",
     "timer": "10 minutes",
+    "skill": "50%",
+    "knowledge": "30%",
+    "application": "20%",
+    "why": "This Sorting Algorithms exam tests critical understanding of classic sorting techniques, complexity analysis, and decision-making based on data characteristics. It enables learners to apply sorting algorithms like Bubble, Insertion, and Selection Sort effectively in real-life scenarios, including performance optimization and algorithm selection."
+,
     "questions": [
       {
         "question": "Which of the following is NOT a basic sorting algorithm covered in this exam?",

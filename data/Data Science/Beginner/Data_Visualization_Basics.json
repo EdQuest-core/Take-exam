@@ -4,6 +4,11 @@
     "level": "Beginner",
     "Difficulty": "Easy",
     "timer": "10 minutes",
+    "skill": "30%",
+    "knowledge": "60%",
+    "application": "10%",
+    "why": "This quiz introduces the fundamentals of data visualization, helping learners understand the use of common chart types like bar graphs, pie charts, and histograms. It strengthens basic interpretation and presentation skills essential for data analysis.",
+
     "questions": [
       {
         "question": "Which chart is best for showing categorical data proportions?",

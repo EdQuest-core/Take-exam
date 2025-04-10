@@ -4,6 +4,11 @@
     "level": "Beginner",
     "Difficulty": "Easy",
     "timer": "10 minutes",
+    "skill": "40%",
+    "knowledge": "50%",
+    "application": "10%",
+    "why": "This Arrays and Strings exam introduces foundational data structures for software development by assessing conceptual understanding, Python syntax, and manipulation techniques such as slicing, concatenation, and traversal. It builds the ability to write efficient and accurate code for problems involving sequential data.",
+
     "questions": [
       {
         "question": "How do you declare an integer array of size 5 in Python?",

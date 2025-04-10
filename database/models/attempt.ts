@@ -27,7 +27,7 @@ const AttemptSchema: Schema = new Schema({
   attemptHistory: [{
     date: { type: Date, default: Date.now },
     score: { type: Number, required: true },
-    completionTime: { type: Number, default: 0 } 
+    completionTime: { type: Number, default: 0 }
   }],
   averageCompletionTime: { type: Number, default: 0 }  
 }, { timestamps: true });

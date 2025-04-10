@@ -4,6 +4,11 @@
     "level": "Advanced",
     "Difficulty": "Hard",
     "timer": "30 minutes",
+    "skill": "30%",
+    "knowledge": "50%",
+    "application": "20%",
+    "why": "This Time Series Analysis assessment challenges learners to master forecasting models like ARIMA, understand key concepts like stationarity, seasonality, and autocorrelation, and apply anomaly detection strategies. It builds deep analytical insight into temporal data, supporting roles that involve financial modeling, trend forecasting, and decision-making based on time-dependent patterns.",
+
     "questions": [
       {
         "question": "Scenario: You predict stock prices. Evaluate: Is ARIMA suitable if data has a trend?",
