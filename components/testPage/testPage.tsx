@@ -1,9 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import ThemeToggle from "./themeToggle"
 import { toast, Toaster } from "sonner"
 
 // Types
@@ -19,6 +18,104 @@ type ExamData = {
   level: string
   category: string
   questions: QuestionType[]
+}
+
+const ScrollContainer: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [scrollCirclePosition, setScrollCirclePosition] = useState(30)
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null)
+  const scrollIndicatorRef = useRef<SVGSVGElement | null>(null)
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    // Check initially if scrolling is needed
+    checkIfScrollable()
+
+    function checkIfScrollable() {
+      const container = scrollContainerRef.current
+      if (!container) return
+
+      // Show indicator only if content requires scrolling
+      const isScrollable = container.scrollHeight > container.clientHeight
+      setShowScrollIndicator(isScrollable)
+    }
+
+    function updateScrollIndicator() {
+      const container = scrollContainerRef.current
+      if (!container || !scrollIndicatorRef.current) return
+
+      // Update scrollable status
+      checkIfScrollable()
+
+      const scrollable = container.scrollHeight - container.clientHeight
+      const scrollPercentage =
+        scrollable <= 0 ? 0 : container.scrollTop / scrollable
+
+      const maxPosition = 270
+      const minPosition = 30
+      const newPosition =
+        minPosition + scrollPercentage * (maxPosition - minPosition)
+
+      setScrollCirclePosition(newPosition)
+    }
+
+    // Add scroll event listener
+    container.addEventListener("scroll", updateScrollIndicator)
+
+    const resizeObserver = new ResizeObserver(() => {
+      checkIfScrollable()
+      updateScrollIndicator()
+    })
+
+    resizeObserver.observe(container)
+
+    return () => {
+      container.removeEventListener("scroll", updateScrollIndicator)
+      resizeObserver.disconnect()
+    }
+  }, [])
+
+  return (
+    <div className="relative">
+      <div
+        ref={scrollContainerRef}
+        className="custom-scrollbar max-h-[220px] overflow-x-hidden overflow-y-auto pr-2"
+        style={{ position: "relative" }}
+      >
+        {children}
+      </div>
+      {showScrollIndicator && (
+        <div className="pointer-events-none absolute top-0 right-[-5px] z-20 h-full w-6">
+          <svg
+            ref={scrollIndicatorRef}
+            viewBox="0 0 20 300"
+            className="h-full w-full"
+          >
+            <line
+              x1="10"
+              y1="0"
+              x2="10"
+              y2="300"
+              stroke="#333"
+              strokeWidth="2"
+            />
+            <circle
+              cx="10"
+              cy={scrollCirclePosition}
+              r="6"
+              fill="#FFCC66"
+              stroke="#333"
+              strokeWidth="1"
+            />
+          </svg>
+        </div>
+      )}
+    </div>
+  )
 }
 
 // Helper to get question status
@@ -49,21 +146,18 @@ function getQuestionStatus(
 }
 
 // Sidebar Component
-// Sidebar Component
 function ExamSidebar({
   examData,
   selectedOptions,
   visitedQuestions,
   markedQuestions,
-  setMarkedQuestions,
-  activeQuestion,
   setActiveQuestion,
   theme,
   submitHovered,
   setSubmitHovered,
   handleSubmit,
   submitted,
-  timeLeft, // Add this prop
+  timeLeft,
   formatTime,
 }: {
   examData: ExamData | null
@@ -77,24 +171,25 @@ function ExamSidebar({
   submitHovered: boolean
   setSubmitHovered: (hovered: boolean) => void
   handleSubmit: (isAutoSubmit: boolean) => void
-  timeLeft: number // Add this type
-  formatTime: (seconds: number) => string // Add this type
+  timeLeft: number
+  formatTime: (seconds: number) => string
   submitted: boolean
 }) {
   const [isMobile, setIsMobile] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  // Check if mobile on mount and when window resizes
+  // Check for mobile on mount
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth <= 1024)
+      const handleResize = () => {
+        setIsMobile(window.innerWidth <= 1024)
+      }
 
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-
-    return () => {
-      window.removeEventListener("resize", checkMobile)
+      window.addEventListener("resize", handleResize)
+      return () => {
+        window.removeEventListener("resize", handleResize)
+      }
     }
   }, [])
 
@@ -133,41 +228,41 @@ function ExamSidebar({
       {/* Overlay for mobile when menu is open */}
       {isMobile && isMenuOpen && (
         <div
-          className="bg-opacity-50 fixed inset-0 z-30 bg-black"
+          className="fixed inset-0 z-30 bg-black/50"
           onClick={toggleMenu}
         />
       )}
 
-      {/* sidebar - Responsive */}
+      {/* sidebar*/}
       <div
         className={` ${
           isMobile
-            ? `fixed inset-y-0 right-0 z-40 w-[280px] transition-transform duration-300
+            ? `fixed inset-y-0 right-0 z-40 w-[255px] transition-transform duration-300
               ease-in-out`
-            : "absolute top-20 right-0 w-[280px]"
+            : "absolute top-8 right-0 w-[260px]"
           } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"} flex
-          max-h-[910px] min-h-[650px] flex-col overflow-auto rounded-l-3xl bg-white p-4
+          max-h-[800px] min-h-[600px] flex-col overflow-auto rounded-l-3xl bg-white p-4
           shadow-lg`}
       >
         {/* category name */}
         <div
-          className="absolute top-0 left-7 rounded-t-none rounded-b-3xl bg-black px-6 py-0.5 pb-0
-            text-lg text-white"
+          className="text-1lg absolute top-0 left-1/2 -translate-x-1/2 rounded-t-none rounded-b-3xl
+            bg-black px-6 py-0.5 pb-0 text-center whitespace-nowrap text-white"
         >
           {examData?.category || "Loading..."}
         </div>
 
         {/* Title */}
-        <h2 className="absolute right-4 mt-8 text-lg font-bold">
+        <h2 className="text-2sm absolute right-4 mt-5 max-w-xs text-right font-bold">
           {examData?.title || "Loading..."}
         </h2>
 
-        {/* Timer and Divider Container - Reorganized */}
-        <div className="mt-20 flex items-center">
-          {/* Timer - On left side */}
+        {/* Timer and Divider Container */}
+        <div className="mt-15 ml-2 flex items-center">
+          {/* Timer */}
           <div className="relative z-20">
             <svg
-              width="130"
+              width="100"
               height="70"
               viewBox="0 0 140 70"
               fill="none"
@@ -224,8 +319,8 @@ function ExamSidebar({
             </div>
           </div>
 
-          {/* Divider - Now to the right of timer */}
-          <div className="ml-2 flex-1">
+          {/* Divider */}
+          <div className="ml-1 flex-1">
             <svg
               width="100%"
               height="2"
@@ -242,7 +337,7 @@ function ExamSidebar({
         </div>
 
         {/* Status */}
-        <div className="mt-4 space-y-3 pl-10">
+        <div className="mt-1 space-y-1 pl-5">
           <div className="flex items-center justify-end gap-3">
             <span className="w-40 text-right text-lg">Not visited</span>
             <span className="h-5 w-5 rounded-full bg-[#D9D9D9]"></span>
@@ -262,58 +357,61 @@ function ExamSidebar({
         </div>
 
         {/* Question no */}
-        <div className="relative left-10 mt-6 w-fit rounded-3xl bg-[#F7F7F7] p-4">
-          <h3 className="mb-2 text-right text-xl font-semibold">Questions</h3>
-          <div className="relative left-3 grid grid-cols-5 gap-2">
-            {examData?.questions?.map((_, index) => {
-              const status = getQuestionStatus(
-                index,
-                selectedOptions,
-                visitedQuestions,
-                markedQuestions
-              )
+        <div className="relative left-7 mt-4 w-fit rounded-3xl bg-[#F7F7F7] p-3">
+          <h3 className="mr-2 mb-2 text-right text-lg font-semibold">
+            Questions
+          </h3>
+          <ScrollContainer>
+            <div className="grid w-full grid-cols-5 gap-1 pr-2">
+              {examData?.questions?.map((_, index) => {
+                const status = getQuestionStatus(
+                  index,
+                  selectedOptions,
+                  visitedQuestions,
+                  markedQuestions
+                )
 
-              let bgColor = "bg-[#D9D9D9]" // not visited
-              if (status === "answered") bgColor = "bg-[#CCEEAA]"
-              if (status === "markedForReview") bgColor = "bg-[#AACCFF]"
-              if (status === "markedAndAnswered") bgColor = "bg-[#AACCFF]"
-              if (status === "notAnswered") bgColor = "bg-[#FFB1AA]"
+                let bgColor = "bg-[#D9D9D9]"
+                if (status === "answered") bgColor = "bg-[#CCEEAA]"
+                if (status === "markedForReview") bgColor = "bg-[#AACCFF]"
+                if (status === "markedAndAnswered") bgColor = "bg-[#AACCFF]"
+                if (status === "notAnswered") bgColor = "bg-[#FFB1AA]"
 
-              return (
-                <div
-                  key={index}
-                  className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-sm
-                  font-semibold ${bgColor}`}
-                  onClick={() => {
-                    setActiveQuestion(index)
-                    // Scroll to the corresponding question
-                    const questionElement = document.getElementById(
-                      `question-${index}`
-                    )
-                    if (questionElement) {
-                      questionElement.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center",
-                      })
-                    }
-                  }}
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-              )
-            })}
-          </div>
+                return (
+                  <div
+                    key={index}
+                    className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-sm
+                    font-semibold ${bgColor} relative z-10`}
+                    onClick={() => {
+                      setActiveQuestion(index)
+                      const questionElement = document.getElementById(
+                        `question-${index}`
+                      )
+                      if (questionElement) {
+                        questionElement.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        })
+                      }
+                    }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                )
+              })}
+            </div>
+          </ScrollContainer>
         </div>
 
-        {/* Submit Button - We'll keep the original one with Framer Motion */}
-        <div className="mt-10 flex justify-center">
+        {/* Submit Button*/}
+        <div className="mt-3 ml-5 flex justify-center">
           <motion.div
             className="relative flex justify-center"
             onHoverStart={() => setSubmitHovered(true)}
             onHoverEnd={() => setSubmitHovered(false)}
           >
             <motion.div
-              className="absolute z-0 h-10 w-40 rounded-full md:h-12 md:w-48"
+              className="absolute z-0 h-11 w-40 rounded-full md:h-12 md:w-40"
               initial={{
                 rotate: -3,
                 backgroundColor: theme === "dark" ? "#FFCC66" : "#000000",
@@ -337,7 +435,7 @@ function ExamSidebar({
             <button
               className="relative z-10 flex h-10 w-40 items-center justify-center rounded-full border-2
                 border-black bg-white text-sm font-medium text-gray-800 hover:bg-white md:h-12
-                md:w-48 md:text-base lg:text-lg"
+                md:w-40 md:text-base lg:text-lg"
               onClick={() => handleSubmit(false)}
               disabled={submitted}
             >
@@ -356,7 +454,6 @@ type Props = {
 }
 export default function Exam2({ title, category }: Props) {
   const router = useRouter()
-
 
   const [startTime, setStartTime] = useState<number>(0)
   const [examData, setExamData] = useState<ExamData | null>(null)
@@ -380,25 +477,15 @@ export default function Exam2({ title, category }: Props) {
   // Check for mobile on mount
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setIsMobile(window.innerWidth < 768)
-
+      setIsMobile(window.innerWidth <= 1024)
       const handleResize = () => {
-        setIsMobile(window.innerWidth < 768)
+        setIsMobile(window.innerWidth <= 1024)
       }
 
       window.addEventListener("resize", handleResize)
       return () => {
         window.removeEventListener("resize", handleResize)
       }
-    }
-  }, [])
-
-  // Load and listen for theme changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const savedTheme = localStorage.getItem("theme") || "light"
-      setTheme(savedTheme)
-      document.documentElement.classList.toggle("dark", savedTheme === "dark")
     }
   }, [])
 
@@ -430,12 +517,6 @@ export default function Exam2({ title, category }: Props) {
     fetchQuestions()
   }, [category, title])
 
-  // Save theme changes
-  useEffect(() => {
-    localStorage.setItem("theme", theme)
-    document.documentElement.classList.toggle("dark", theme === "dark")
-  }, [theme])
-
   // Timer
   useEffect(() => {
     if (timeLeft > 0 && !submitted) {
@@ -447,11 +528,10 @@ export default function Exam2({ title, category }: Props) {
   }, [timeLeft, submitted])
 
   useEffect(() => {
-    // Set start time when exam begins
     setStartTime(Date.now())
   }, [])
 
-  // Format timer - This function moved here so it can be used by the ExamSidebar component
+  // Format timer
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60)
     const secs = seconds % 60
@@ -467,7 +547,7 @@ export default function Exam2({ title, category }: Props) {
     }
   }
 
-  // Mark question as flagged (if you have a button for it)
+  // Mark question as flagged
   const handleMarkQuestion = (index: number) => {
     if (!markedQuestions.includes(index)) {
       setMarkedQuestions((prev) => [...prev, index])
@@ -564,20 +644,16 @@ export default function Exam2({ title, category }: Props) {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100 md:flex-row">
       {/* Main content */}
-      <div className="flex flex-1 flex-col items-center pr-4 md:pr-8">
-        {/* Theme Toggle */}
-        <div className="flex w-full justify-end">
-          <ThemeToggle />
-        </div>
-
+      <div className="flex flex-1 flex-col items-center px-4 md:px-8">
         {/* Title Card with animation */}
         <motion.div
-          className="relative flex justify-center py-4 md:py-8"
+          className="relative z-20 -mb-4 flex justify-center py-2 md:-mb-6 md:py-4"
           onHoverStart={() => setHovered(true)}
           onHoverEnd={() => setHovered(false)}
+          style={{ marginTop: "1.5rem" }}
         >
           <motion.div
-            className="absolute z-0 h-12 w-full rounded-full md:h-16 md:w-[716px]"
+            className="absolute z-0 h-10 w-[80%] rounded-full md:h-12 md:w-[500px]"
             initial={{ rotate: -2 }}
             animate={{
               backgroundColor: hovered
@@ -596,24 +672,29 @@ export default function Exam2({ title, category }: Props) {
 
           {/* Title */}
           <div
-            className="relative z-10 flex h-12 w-full items-center justify-center rounded-full border-2
-              border-black bg-white text-lg font-bold text-gray-800 md:h-16 md:w-[716px]
-              md:text-3xl"
+            className="relative z-10 flex h-10 w-[80%] items-center justify-center rounded-full
+              border-2 border-black bg-white px-3 text-base font-bold text-gray-800 shadow-md
+              md:h-12 md:w-[500px] md:px-6 md:text-2xl"
           >
-            {loading ? "Loading..." : examData?.title || title}
+            <span className="truncate">
+              {loading ? "Loading..." : examData?.title || title}
+            </span>
           </div>
         </motion.div>
 
         {/* Main Question Container */}
-        <div className="relative mt-6 w-full max-w-full md:max-w-5xl">
-          {/* Timer - Only show this timer on smaller screens where sidebar might not be visible */}
+        <div
+          className="relative z-10 w-full max-w-full md:max-w-3xl"
+          style={{ marginTop: "-1.5rem" }}
+        >
+          {/* Timer */}
           {isMobile && (
-            <div className="absolute -top-8 right-4 z-20 flex items-center justify-center">
+            <div className="absolute top-2 right-4 z-30 flex items-center justify-center">
               <div className="relative">
                 <svg
-                  className="w-28 md:w-36"
-                  width="140"
-                  height="70"
+                  className="w-20 sm:w-22 md:w-28"
+                  width="100"
+                  height="50"
                   viewBox="0 0 140 70"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -653,8 +734,8 @@ export default function Exam2({ title, category }: Props) {
                   />
                 </svg>
                 <div
-                  className="absolute inset-0 flex items-center justify-center pt-2 text-base font-semibold
-                    text-gray-800 md:text-xl"
+                  className="absolute inset-0 flex items-center justify-center pt-2 text-xs font-semibold
+                    text-gray-800 sm:text-sm md:text-base"
                 >
                   {formatTime(timeLeft)}
                 </div>
@@ -664,78 +745,87 @@ export default function Exam2({ title, category }: Props) {
 
           {/* Questions Container */}
           <div
-            className="flex min-h-[calc(100vh-200px)] flex-col rounded-4xl border border-gray-300
-              bg-white p-4 shadow-lg md:p-6"
+            className="mb-16 flex flex-col rounded-4xl bg-white px-4 pt-12 pb-6 shadow-lg md:px-6
+              md:pt-16"
           >
-            <div
-              className="custom-scrollbar flex-grow overflow-y-auto px-4 pt-6 md:px-6 md:pt-12"
-              style={{ maxHeight: "70vh" }}
-            >
-              {loading ? (
-                <p className="text-center text-gray-600">
-                  Loading questions...
-                </p>
+            <div className="flex-grow">
+              {/* Check if examData is null or loading */}
+              {loading || !examData ? (
+                <p className="text-center text-black">Loading questions...</p>
               ) : (
-                examData?.questions.map(
-                  (question: QuestionType, index: number) => (
-                    <div
-                      key={index}
-                      id={`question-${index}`}
-                      className="mb-8"
-                      onMouseEnter={() => {
-                        // Mark question as visited on hover or scroll
-                        if (!visitedQuestions.includes(index)) {
-                          setVisitedQuestions((prev) => [...prev, index])
-                        }
-                      }}
-                    >
-                      <h2 className="text-black-800 mb-4 text-xl font-semibold">
-                        {index + 1}. {question.question}
-                      </h2>
-                      {question.options.map(
-                        (option: string, optionIndex: number) => (
-                          <div
-                            key={optionIndex}
-                            className={`my-3 cursor-pointer rounded-4xl border p-4 pl-12 ${
-                              selectedOptions[index] === option
-                                ? "border-gray-950 bg-[#FFCC66] text-gray-800"
-                                : "border-gray-300 bg-white text-black"
-                              }`}
-                            onClick={() => handleOptionSelect(index, option)}
-                          >
-                            <span className="mr-2 font-bold text-black">
-                              {optionLabels[optionIndex]}.
-                            </span>{" "}
-                            <span className="font-medium text-black">
-                              {option}
-                            </span>
-                          </div>
-                        )
-                      )}
+                // Render only the current question
+                <div
+                  key={activeQuestion}
+                  id={`question-${activeQuestion}`}
+                  className="mb-2"
+                  onMouseEnter={() => {
+                    if (!visitedQuestions.includes(activeQuestion)) {
+                      setVisitedQuestions((prev) => [...prev, activeQuestion])
+                    }
+                  }}
+                >
+                  <h2 className="text-black-800 mb-4 text-xl font-semibold">
+                    {activeQuestion + 1}.{" "}
+                    {examData?.questions?.[activeQuestion]?.question}
+                  </h2>
 
-                      {/* Example "Mark" button to illustrate flagged logic */}
-                      <button
-                        className={`mt-2 rounded-full border px-4 py-2 text-sm ${
-                          markedQuestions.includes(index)
-                            ? "bg-[#AACCFF] text-black"
-                            : "bg-black text-white"
+                  {/* Render options */}
+                  {examData?.questions?.[activeQuestion]?.options?.map(
+                    (option, optionIndex) => (
+                      <div
+                        key={optionIndex}
+                        className={`my-2 cursor-pointer rounded-4xl border p-3 pl-10 ${
+                          selectedOptions[activeQuestion] === option
+                            ? "border-black bg-[#FFCC66] text-gray-800"
+                            : "border-black bg-white text-black"
                           }`}
-                        onClick={() => handleMarkQuestion(index)}
+                        onClick={() =>
+                          handleOptionSelect(activeQuestion, option)
+                        }
                       >
-                        {markedQuestions.includes(index)
-                          ? "Unmark"
-                          : "Mark & Answer"}
+                        <span className="mr-2 font-bold text-black">
+                          {optionLabels[optionIndex]}.
+                        </span>
+                        <span className="font-medium text-black">{option}</span>
+                      </div>
+                    )
+                  )}
+
+                  {/* Buttons */}
+                  <div className="mt-8 mb-5 flex gap-4">
+                    {/* Mark for Review */}
+                    <button
+                      className={`rounded-full border px-4 py-2 text-sm ${
+                        markedQuestions.includes(activeQuestion)
+                          ? "bg-[#AACCFF] text-black"
+                          : "bg-black text-white"
+                        }`}
+                      onClick={() => handleMarkQuestion(activeQuestion)}
+                    >
+                      {markedQuestions.includes(activeQuestion)
+                        ? "Unmark"
+                        : "Mark for Review"}
+                    </button>
+
+                    {/* Only show "Next" if it's not the last question */}
+                    {activeQuestion <
+                      (examData?.questions?.length ?? 0) - 1 && (
+                      <button
+                        className="ml-auto rounded-full bg-black px-10 py-2 text-sm text-white"
+                        onClick={() => setActiveQuestion((prev) => prev + 1)}
+                      >
+                        Next
                       </button>
-                    </div>
-                  )
-                )
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Sidebar - Now using our redesigned component */}
+      {/* Sidebar */}
       <ExamSidebar
         examData={examData}
         selectedOptions={selectedOptions}
@@ -749,7 +839,7 @@ export default function Exam2({ title, category }: Props) {
         setSubmitHovered={setSubmitHovered}
         handleSubmit={handleSubmit}
         submitted={submitted}
-        timeLeft={timeLeft} // Pass the timeLeft state
+        timeLeft={timeLeft} 
         formatTime={formatTime}
       />
 
