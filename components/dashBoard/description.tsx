@@ -810,7 +810,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
         </h2>
 
         {/* Timer and Divider */}
-        <div className="mt-13 mb-0 ml-2 flex items-center">
+        <div className="mt-14 mb-0 ml-2 flex items-center">
           {/* Timer */}
           <div className="relative z-20">
             <svg

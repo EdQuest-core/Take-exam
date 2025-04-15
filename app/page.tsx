@@ -6,7 +6,7 @@ import Problems from "@/components/dashBoard/topiclist";
 
 const TakeExam = () => {
   return (
-<div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-[#DFE1E8] overflow-y-hidden">
+<div className="flex min-h-screen flex-col items-center justify-center p-4 md:p-8 bg-[#DFE1E8] overflow-y-auto scrollbar-hide">
 <div className="space-y-4 text-center md:space-y-6">
         {/* Books and Title Section */}
         <div className="relative mt-48 mb-2 flex flex-col items-center justify-center gap-2 md:flex-row">
