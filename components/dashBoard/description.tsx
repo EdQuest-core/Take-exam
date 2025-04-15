@@ -37,6 +37,12 @@ type AttemptData = {
   }>
 }
 
+interface DescriptionProps {
+  title: string
+  category: string
+  onBack: () => void
+}
+
 const ScrollContainer: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -100,7 +106,7 @@ const ScrollContainer: React.FC<{ children: React.ReactNode }> = ({
     <div className="relative">
       <div
         ref={scrollContainerRef}
-        className="custom-scrollbar max-h-[220px] overflow-x-hidden overflow-y-auto pr-2"
+        className="custom-scrollbar max-h-[125px] overflow-x-hidden overflow-y-auto pr-2"
         style={{ position: "relative" }}
       >
         {children}
@@ -135,13 +141,7 @@ const ScrollContainer: React.FC<{ children: React.ReactNode }> = ({
   )
 }
 
-const Description = () => {
-  const searchParams = useSearchParams()
-  const category = decodeURIComponent(
-    searchParams?.get("category") || ""
-  ).trim()
-  const title = decodeURIComponent(searchParams?.get("title") || "").trim()
-
+const Description = ({ title, category, onBack }: DescriptionProps) => {
   const [showFullText, setShowFullText] = useState(false)
   const [hovered, setHovered] = useState<boolean>(false)
   const [theme, setTheme] = useState<string>("light")
@@ -152,41 +152,85 @@ const Description = () => {
   const [showTestPage, setShowTestPage] = useState<boolean>(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [sidebarOffset, setSidebarOffset] = useState({ top: 0, right: 0 })
+
+  // Create refs for key elements
+  const titleCardRef = useRef<HTMLDivElement>(null)
+  const sidebarRef = useRef<HTMLDivElement>(null)
+  const mainContainerRef = useRef<HTMLDivElement>(null)
 
   const isLocked =
     attemptData?.isLocked || (attemptData?.attemptsLeft ?? 0) <= 0
 
-  const titleCardRef = useRef<HTMLDivElement>(null)
-  const sidebarRef = useRef<HTMLDivElement>(null)
-  const [sidebarTop, setSidebarTop] = useState<number>(100 + 32)
+  // Function to update sidebar position
+  const updateSidebarPosition = () => {
+    if (titleCardRef.current && mainContainerRef.current && !isMobile) {
+      const titleCardRect = titleCardRef.current.getBoundingClientRect()
+      const containerRect = mainContainerRef.current.getBoundingClientRect()
+
+      const rightOffset = window.innerWidth - containerRect.right
+
+      setSidebarOffset({
+        top: titleCardRect.bottom + 20,
+        right: Math.max(rightOffset, 20),
+      })
+    }
+  }
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 1024)
-    }
-
-    const updateSidebarPosition = () => {
-      if (titleCardRef.current) {
-        const titleCardRect = titleCardRef.current.getBoundingClientRect()
-        const newTop = titleCardRect.bottom + 32
-        setSidebarTop(newTop)
+      const newIsMobile = window.innerWidth <= 1024
+      setIsMobile(newIsMobile)
+      if (!newIsMobile) {
+        updateSidebarPosition()
       }
     }
 
-    // Initial checks
     checkScreenSize()
-    updateSidebarPosition()
 
     const handleResize = () => {
       checkScreenSize()
-      updateSidebarPosition()
+    }
+
+    const handleScroll = () => {
+      if (!isMobile) {
+        updateSidebarPosition()
+      }
     }
 
     window.addEventListener("resize", handleResize)
+    window.addEventListener("scroll", handleScroll)
+
+    const observer = new MutationObserver(() => {
+      updateSidebarPosition()
+    })
+
+    if (document.body) {
+      observer.observe(document.body, {
+        attributes: true,
+        childList: true,
+        subtree: true,
+      })
+    }
+
+    // Call sidebar
+    const timeoutId = setTimeout(updateSidebarPosition, 500)
 
     // Cleanup
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    return () => {
+      window.removeEventListener("resize", handleResize)
+      window.removeEventListener("scroll", handleScroll)
+      observer.disconnect()
+      clearTimeout(timeoutId)
+    }
+  }, [isMobile])
+
+  // Called after exam data loads to update positions
+  useEffect(() => {
+    if (!loading && examData) {
+      updateSidebarPosition()
+    }
+  }, [loading, examData])
 
   // Toggle menu function
   const toggleMenu = () => {
@@ -207,7 +251,7 @@ const Description = () => {
       : text
   }
 
-  // Generate or retrive id
+  // Generate or retrieve id
   useEffect(() => {
     let storedDeviceId = localStorage.getItem("deviceId")
     if (!storedDeviceId) {
@@ -246,21 +290,16 @@ const Description = () => {
     const fetchAttemptData = async () => {
       if (!deviceId || !title || !category) return
 
-      console.log("Fetching attempt data with:", { deviceId, title, category })
-
       try {
         const url = `/api/attempts?deviceId=${encodeURIComponent(deviceId)}&title=${encodeURIComponent(title)}&category=${encodeURIComponent(category)}`
-        console.log("Request URL:", url)
 
         const response = await fetch(url)
-        console.log("Response status:", response.status)
 
         if (!response.ok) {
           throw new Error(`Failed to fetch attempt data: ${response.status}`)
         }
 
         const data = await response.json()
-        console.log("Attempt data received:", data)
 
         setAttemptData({
           title: data.title || title,
@@ -270,7 +309,7 @@ const Description = () => {
           bestScore: data.bestScore ?? 0,
           averageCompletionTime: data.averageCompletionTime ?? 0,
           attemptHistory: data.attemptHistory || [],
-          isLocked: false, 
+          isLocked: false,
         })
       } catch (error) {
         console.error("Error fetching attempt data:", error)
@@ -328,7 +367,6 @@ const Description = () => {
       })
     )
 
-    // Instead of routing, show the test page component
     setShowTestPage(true)
   }
 
@@ -366,8 +404,9 @@ const Description = () => {
 
   return (
     <div
-      className="mx-auto flex min-h-screen max-w-screen flex-col items-center justify-center
-        overflow-x-hidden overflow-y-hidden bg-[#E6E9F0] p-4 px-4 sm:px-6 lg:px-8"
+      ref={mainContainerRef}
+      className="mx-auto flex min-h-screen w-full flex-col items-center justify-center
+        overflow-x-hidden bg-[#E6E9F0] px-4 py-6 sm:px-6 lg:px-8"
     >
       <Toaster position="top-center" />
       <motion.div
@@ -414,7 +453,7 @@ const Description = () => {
         </div>
       </motion.div>
 
-      {/* left & right grid*/}
+      {/* left & right grid */}
       <div
         className="mx-auto mt-10 flex h-full w-full max-w-full flex-col items-start gap-4 px-4
           sm:max-w-xl sm:px-6 md:max-w-2xl md:flex-row md:px-8 lg:max-w-3xl xl:max-w-4xl"
@@ -649,28 +688,44 @@ const Description = () => {
           </div>
         </div>
       </div>
-      {/* who will*/}
-      <div className="mt-6 text-center">
-        <h3 className="mb-4 text-3xl font-medium">Who will take this exam?</h3>
-        <div className="flex flex-wrap justify-center gap-4">
-          <button className="rounded-full border border-black px-4 py-2 text-lg font-bold">
+
+      {/* Who will take exam section */}
+      <div className="mt-6 w-full px-4 text-center">
+        <h3 className="mb-4 text-xl font-medium sm:text-2xl md:text-3xl">
+          Who will take this exam?
+        </h3>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
+          <button
+            className="rounded-full border border-black px-3 py-1 text-sm font-bold sm:px-4 sm:py-2
+              sm:text-lg"
+          >
             B.Tech/B.E. (all specializations)
           </button>
-          <button className="rounded-full border border-black px-4 py-2 text-lg font-bold">
+          <button
+            className="rounded-full border border-black px-3 py-1 text-sm font-bold sm:px-4 sm:py-2
+              sm:text-lg"
+          >
             BSc IT
           </button>
-          <button className="rounded-full border border-black px-4 py-2 text-lg font-bold">
+          <button
+            className="rounded-full border border-black px-3 py-1 text-sm font-bold sm:px-4 sm:py-2
+              sm:text-lg"
+          >
             BCA
           </button>
-          <button className="rounded-full border border-black px-4 py-2 text-lg font-bold">
+          <button
+            className="rounded-full border border-black px-3 py-1 text-sm font-bold sm:px-4 sm:py-2
+              sm:text-lg"
+          >
             MCA
           </button>
         </div>
 
-        {/* start button */}
-        <div className="mt-10 flex justify-center">
+        {/* Start button */}
+        <div className="mt-6 flex justify-center sm:mt-8 md:mt-10">
           <div
-            className={`relative cursor-pointer ${isLocked ? "cursor-not-allowed opacity-50" : ""}`}
+            className={`relative scale-75 cursor-pointer sm:scale-90 md:scale-100
+              ${isLocked ? "cursor-not-allowed opacity-50" : ""}`}
             onClick={isLocked ? undefined : handleStartTest}
           >
             <svg
@@ -698,7 +753,7 @@ const Description = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Toggle Button */}
+      {/* Toggle Button */}
       {isMobile && (
         <button
           onClick={toggleMenu}
@@ -730,21 +785,21 @@ const Description = () => {
         />
       )}
 
-      {/* sidebar */}
+      {/* Sidebar */}
       <div
-        ref={sidebarRef}
         className={` ${
           isMobile
-            ? `fixed inset-y-0 right-0 z-40 w-[255px] transition-transform duration-300
-              ease-in-out ${!isMenuOpen ? "translate-x-full" : "translate-x-0"}`
-            : "fixed top-40 right-0 w-[260px] sm:top-26 md:top-25 lg:top-20"
-          } flex max-h-[90vh] min-h-[600px] flex-col overflow-auto rounded-l-3xl bg-white
-          p-4 shadow-lg`}
+            ? `fixed inset-y-0 right-0 z-40 w-[200px] transition-transform duration-300
+              ease-in-out`
+            : "absolute top-8 right-0 w-[200px]"
+          } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"} flex
+          max-h-[480px] min-h-[480px] flex-col overflow-auto overflow-y-hidden
+          rounded-l-3xl bg-white p-3 shadow-lg`}
       >
         {/* category name */}
         <div
-          className="text-1lg absolute top-0 left-1/2 -translate-x-1/2 rounded-t-none rounded-b-3xl
-            bg-black px-6 py-0.5 pb-0 text-center whitespace-nowrap text-white"
+          className="absolute top-0 left-1/2 -translate-x-1/2 rounded-t-none rounded-b-3xl bg-black
+            px-3 py-0.5 pb-0 text-center text-sm whitespace-nowrap text-white"
         >
           {examData?.category || "Loading..."}
         </div>
@@ -754,9 +809,9 @@ const Description = () => {
           {examData?.title || "Loading..."}
         </h2>
 
-        {/* Timer and Divider Container */}
-        <div className="mt-15 ml-2 flex items-center">
-          {/* Timer - On left side */}
+        {/* Timer and Divider */}
+        <div className="mt-13 mb-0 ml-2 flex items-center">
+          {/* Timer */}
           <div className="relative z-20">
             <svg
               width="100"
@@ -834,38 +889,38 @@ const Description = () => {
         </div>
 
         {/* Status */}
-        <div className="mt-1 space-y-1 pl-5">
-          <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Not visited</span>
-            <span className="h-5 w-5 rounded-full bg-[#D9D9D9]"></span>
+        <div className="mt-1 space-y-1 pl-3">
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-2sm w-40 text-right">Not visited</span>
+            <span className="h-4 w-4 rounded-full bg-[#D9D9D9]"></span>
           </div>
-          <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Saved answers</span>
-            <span className="h-5 w-5 rounded-full bg-[#CCEEAA]"></span>
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-2sm w-40 text-right">Saved answers</span>
+            <span className="h-4 w-4 rounded-full bg-[#CCEEAA]"></span>
           </div>
-          <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Marked for Review</span>
-            <span className="h-5 w-5 rounded-full bg-[#AACCFF]"></span>
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-2sm w-40 text-right">Marked for Review</span>
+            <span className="h-4 w-4 rounded-full bg-[#AACCFF]"></span>
           </div>
-          <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Not answered</span>
-            <span className="h-5 w-5 rounded-full bg-[#FFB1AA]"></span>
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-2sm w-40 text-right">Not answered</span>
+            <span className="h-4 w-4 rounded-full bg-[#FFB1AA]"></span>
           </div>
         </div>
 
         {/* Question no */}
-        <div className="relative left-7 mt-4 w-fit rounded-3xl bg-[#F7F7F7] p-3">
-          <h3 className="mr-2 mb-2 text-right text-lg font-semibold">
+        <div className="relative left-2 mt-3 w-fit rounded-3xl bg-[#F7F7F7] p-2">
+          <h3 className="sm:text-2sm mr-2 mb-2 text-right text-base font-semibold">
             Questions
           </h3>
           <ScrollContainer>
-            <div className="grid w-full grid-cols-5 gap-1 pr-2">
+            <div className="grid w-full grid-cols-5 gap-1 pr-1">
               {examData?.totalQuestions
                 ? Array.from({ length: examData.totalQuestions }, (_, i) => (
                     <div
                       key={i}
-                      className={`relative z-10 flex h-8 w-8 cursor-pointer items-center justify-center
-                        rounded-full bg-[#D9D9D9] text-sm font-semibold`}
+                      className={`relative z-10 flex h-6 w-6 cursor-pointer items-center justify-center
+                        rounded-full bg-[#D9D9D9] text-xs font-semibold sm:h-7 sm:w-7`}
                     >
                       {String(i + 1).padStart(2, "0")}
                     </div>

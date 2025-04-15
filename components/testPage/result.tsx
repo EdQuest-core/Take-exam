@@ -382,7 +382,7 @@ const ResultPage = () => {
 
           {/* Main Content Area */}
           <motion.div
-            className="mt-6 w-full max-w-5xl"
+            className="mt-6 w-full max-w-4xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -437,10 +437,10 @@ const ResultPage = () => {
                   </div>
 
                   {/* Dashed Line */}
-                  <div className="ml-5 flex h-full justify-center">
+                  <div className="ml-8 flex h-full justify-center">
                     <svg
                       width="2.5"
-                      height="200px"
+                      height="220px"
                       className="stroke-black"
                     >
                       <path
@@ -459,7 +459,7 @@ const ResultPage = () => {
                         <img
                           src="/media/attemptarrow.png"
                           alt="Arrow Icon"
-                          className="h-12 w-20"
+                          className="h-12 w-18"
                         />
                       </div>
                       <span className="mt-2 text-black">
@@ -475,7 +475,7 @@ const ResultPage = () => {
                     {/* Dashed Line */}
                     <div className="w-full">
                       <svg
-                        width="195%"
+                        width="100%"
                         height="2.5"
                         className="stroke-black"
                       >
@@ -489,9 +489,9 @@ const ResultPage = () => {
                     </div>
 
                     {/* Time Taken */}
-                    <div className="relative flex flex-col items-center text-center">
+                    <div className="relative mt-2 flex flex-col items-center text-center">
                       <p className="text-black">Time Taken</p>
-                      <div className="relative flex items-center justify-center">
+                      <div className="relative mt-1 flex items-center justify-center">
                         <svg
                           width="130"
                           height="70"
@@ -595,7 +595,7 @@ const ResultPage = () => {
 
                   {attemptData && (
                     <motion.div
-                      className="mt-4 w-full rounded-3xl border border-[#DFE1E8] bg-gray-100 p-5"
+                      className="mt-4 w-full rounded-3xl border border-[#DFE1E8] bg-gray-100 p-3"
                       whileHover={{ scale: 1.02 }}
                     >
                       <div className="flex items-center justify-between">
@@ -605,7 +605,7 @@ const ResultPage = () => {
                             {`${Math.max(0, attemptData.totalAttempts - attemptData.attemptsLeft)}/${attemptData.totalAttempts}`}
                           </p>
                         </div>
-                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300">
+                        <div className="flex h-15 w-16 items-center justify-center rounded-full bg-gray-300">
                           <p className="text-xl font-bold text-black">
                             {attemptData.bestScore.toFixed(0)}%
                           </p>

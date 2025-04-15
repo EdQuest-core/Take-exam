@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { toast, Toaster } from "sonner"
+import ResultPage from "@/components/testPage/result"
 
 // Types
 type QuestionType = {
@@ -83,7 +84,7 @@ const ScrollContainer: React.FC<{ children: React.ReactNode }> = ({
     <div className="relative">
       <div
         ref={scrollContainerRef}
-        className="custom-scrollbar max-h-[220px] overflow-x-hidden overflow-y-auto pr-2"
+        className="custom-scrollbar max-h-[125px] overflow-x-hidden overflow-y-auto pr-2"
         style={{ position: "relative" }}
       >
         {children}
@@ -201,7 +202,7 @@ function ExamSidebar({
 
   return (
     <>
-      {/* Mobile Menu Toggle Button */}
+      {/* Toggle Button */}
       {isMobile && (
         <button
           onClick={toggleMenu}
@@ -237,12 +238,12 @@ function ExamSidebar({
       <div
         className={` ${
           isMobile
-            ? `fixed inset-y-0 right-0 z-40 w-[255px] transition-transform duration-300
+            ? `fixed inset-y-0 right-0 z-40 w-[230px] transition-transform duration-300
               ease-in-out`
-            : "absolute top-8 right-0 w-[260px]"
+            : "absolute top-8 right-0 w-[230px]"
           } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"} flex
-          max-h-[800px] min-h-[600px] flex-col overflow-auto rounded-l-3xl bg-white p-4
-          shadow-lg`}
+          max-h-[550px] min-h-[510px] flex-col overflow-auto overflow-y-hidden
+          rounded-l-3xl bg-white p-3 shadow-lg`}
       >
         {/* category name */}
         <div
@@ -257,8 +258,8 @@ function ExamSidebar({
           {examData?.title || "Loading..."}
         </h2>
 
-        {/* Timer and Divider Container */}
-        <div className="mt-15 ml-2 flex items-center">
+        {/* Timer and Divider */}
+        <div className="mt-13 mb-0 ml-2 flex items-center">
           {/* Timer */}
           <div className="relative z-20">
             <svg
@@ -337,32 +338,32 @@ function ExamSidebar({
         </div>
 
         {/* Status */}
-        <div className="mt-1 space-y-1 pl-5">
+        <div className="-mt-[1] space-y-1 pl-5">
           <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Not visited</span>
+            <span className="text-2sm w-40 text-right">Not visited</span>
             <span className="h-5 w-5 rounded-full bg-[#D9D9D9]"></span>
           </div>
           <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Saved answers</span>
+            <span className="text-2sm w-40 text-right">Saved answers</span>
             <span className="h-5 w-5 rounded-full bg-[#CCEEAA]"></span>
           </div>
           <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Marked for Review</span>
+            <span className="text-2sm w-40 text-right">Marked for Review</span>
             <span className="h-5 w-5 rounded-full bg-[#AACCFF]"></span>
           </div>
           <div className="flex items-center justify-end gap-3">
-            <span className="w-40 text-right text-lg">Not answered</span>
+            <span className="text-2sm w-40 text-right">Not answered</span>
             <span className="h-5 w-5 rounded-full bg-[#FFB1AA]"></span>
           </div>
         </div>
 
         {/* Question no */}
-        <div className="relative left-7 mt-4 w-fit rounded-3xl bg-[#F7F7F7] p-3">
-          <h3 className="mr-2 mb-2 text-right text-lg font-semibold">
+        <div className="relative left-8 mt-3 w-fit rounded-3xl bg-[#F7F7F7] p-2">
+          <h3 className="mr-2 mb-2 text-right text-base font-semibold sm:text-lg">
             Questions
           </h3>
           <ScrollContainer>
-            <div className="grid w-full grid-cols-5 gap-1 pr-2">
+            <div className="grid w-full grid-cols-5 gap-1 pr-1">
               {examData?.questions?.map((_, index) => {
                 const status = getQuestionStatus(
                   index,
@@ -380,10 +381,11 @@ function ExamSidebar({
                 return (
                   <div
                     key={index}
-                    className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-sm
-                    font-semibold ${bgColor} relative z-10`}
+                    className={`flex h-6 w-6 cursor-pointer items-center justify-center rounded-full text-xs
+                    font-semibold sm:h-7 sm:w-7 ${bgColor} relative z-10`}
                     onClick={() => {
                       setActiveQuestion(index)
+                      // Scroll to the corresponding question
                       const questionElement = document.getElementById(
                         `question-${index}`
                       )
@@ -404,14 +406,14 @@ function ExamSidebar({
         </div>
 
         {/* Submit Button*/}
-        <div className="mt-3 ml-5 flex justify-center">
+        <div className="mt-2 mb-0 ml-5 flex justify-center">
           <motion.div
             className="relative flex justify-center"
             onHoverStart={() => setSubmitHovered(true)}
             onHoverEnd={() => setSubmitHovered(false)}
           >
             <motion.div
-              className="absolute z-0 h-11 w-40 rounded-full md:h-12 md:w-40"
+              className="absolute z-0 h-11 w-35 rounded-full md:h-10 md:w-35"
               initial={{
                 rotate: -3,
                 backgroundColor: theme === "dark" ? "#FFCC66" : "#000000",
@@ -433,9 +435,9 @@ function ExamSidebar({
             />
 
             <button
-              className="relative z-10 flex h-10 w-40 items-center justify-center rounded-full border-2
-                border-black bg-white text-sm font-medium text-gray-800 hover:bg-white md:h-12
-                md:w-40 md:text-base lg:text-lg"
+              className="relative z-8 flex h-8 w-35 items-center justify-center rounded-full border-2
+                border-black bg-white text-sm font-medium text-gray-800 hover:bg-white md:h-10
+                md:w-35 md:text-base lg:text-lg"
               onClick={() => handleSubmit(false)}
               disabled={submitted}
             >
@@ -463,6 +465,7 @@ export default function Exam2({ title, category }: Props) {
   >({})
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [showResultPage, setShowResultPage] = useState(false)
 
   // NEW STATES for question statuses
   const [visitedQuestions, setVisitedQuestions] = useState<number[]>([])
@@ -547,7 +550,7 @@ export default function Exam2({ title, category }: Props) {
     }
   }
 
-  // Mark question as flagged
+  // Mark question
   const handleMarkQuestion = (index: number) => {
     if (!markedQuestions.includes(index)) {
       setMarkedQuestions((prev) => [...prev, index])
@@ -634,18 +637,21 @@ export default function Exam2({ title, category }: Props) {
 
     // Navigate to results page
     setTimeout(() => {
-      router.push("/result")
+      setShowResultPage(true)
     }, 1500)
   }
 
   // Option labels
   const optionLabels = ["A", "B", "C", "D"]
 
+  if (showResultPage) {
+    return <ResultPage />
+  }
   return (
-    <div className="flex min-h-screen flex-col bg-gray-100 md:flex-row">
+    <div className="flex min-h-screen flex-col overflow-y-hidden bg-gray-100 md:flex-row">
       {/* Main content */}
       <div className="flex flex-1 flex-col items-center px-4 md:px-8">
-        {/* Title Card with animation */}
+        {/* Title Card */}
         <motion.div
           className="relative z-20 -mb-4 flex justify-center py-2 md:-mb-6 md:py-4"
           onHoverStart={() => setHovered(true)}
@@ -684,7 +690,7 @@ export default function Exam2({ title, category }: Props) {
 
         {/* Main Question Container */}
         <div
-          className="relative z-10 w-full max-w-full md:max-w-3xl"
+          className="relative z-10 w-full max-w-full md:max-w-2xl lg:max-w-3xl"
           style={{ marginTop: "-1.5rem" }}
         >
           {/* Timer */}
@@ -745,7 +751,7 @@ export default function Exam2({ title, category }: Props) {
 
           {/* Questions Container */}
           <div
-            className="mb-16 flex flex-col rounded-4xl bg-white px-4 pt-12 pb-6 shadow-lg md:px-6
+            className="mb-16 flex flex-col rounded-4xl bg-white px-3 pt-12 pb-6 shadow-lg md:px-5
               md:pt-16"
           >
             <div className="flex-grow">
@@ -793,7 +799,6 @@ export default function Exam2({ title, category }: Props) {
 
                   {/* Buttons */}
                   <div className="mt-8 mb-5 flex gap-4">
-                    {/* Mark for Review */}
                     <button
                       className={`rounded-full border px-4 py-2 text-sm ${
                         markedQuestions.includes(activeQuestion)
@@ -807,7 +812,7 @@ export default function Exam2({ title, category }: Props) {
                         : "Mark for Review"}
                     </button>
 
-                    {/* Only show "Next" if it's not the last question */}
+                    {/* display next if its not last Q. */}
                     {activeQuestion <
                       (examData?.questions?.length ?? 0) - 1 && (
                       <button
@@ -825,7 +830,7 @@ export default function Exam2({ title, category }: Props) {
         </div>
       </div>
 
-      {/* Sidebar */}
+      {/* Sidebar*/}
       <ExamSidebar
         examData={examData}
         selectedOptions={selectedOptions}
@@ -839,7 +844,7 @@ export default function Exam2({ title, category }: Props) {
         setSubmitHovered={setSubmitHovered}
         handleSubmit={handleSubmit}
         submitted={submitted}
-        timeLeft={timeLeft} 
+        timeLeft={timeLeft}
         formatTime={formatTime}
       />
 
