@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion"
 import { useState, useEffect, useRef } from "react"
-import { useSearchParams } from "next/navigation"
 import { toast, Toaster } from "sonner"
 import TestPage from "@/components/testPage/testPage"
 
@@ -28,8 +27,6 @@ type AttemptData = {
   totalAttempts: number
   bestScore: number
   averageCompletionTime?: number
-  isLocked?: boolean
-  lockoutEndTime?: string | null
   attemptHistory?: Array<{
     date: Date | string
     score: number
@@ -159,14 +156,22 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
   const sidebarRef = useRef<HTMLDivElement>(null)
   const mainContainerRef = useRef<HTMLDivElement>(null)
 
-  const isLocked =
-    attemptData?.isLocked || (attemptData?.attemptsLeft ?? 0) <= 0
-
   // Function to update sidebar position
   const updateSidebarPosition = () => {
-    if (titleCardRef.current && mainContainerRef.current && !isMobile) {
+    if (
+      titleCardRef.current &&
+      mainContainerRef.current &&
+      sidebarRef.current &&
+      !isMobile
+    ) {
       const titleCardRect = titleCardRef.current.getBoundingClientRect()
       const containerRect = mainContainerRef.current.getBoundingClientRect()
+
+      // Find the bottom of the content section with the start button
+      const startButtonSection = document.querySelector(".mt-6") 
+      const contentBottom = startButtonSection
+        ? startButtonSection.getBoundingClientRect().bottom
+        : containerRect.bottom
 
       const rightOffset = window.innerWidth - containerRect.right
 
@@ -174,6 +179,14 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
         top: titleCardRect.bottom + 20,
         right: Math.max(rightOffset, 20),
       })
+
+      const viewportHeight = window.innerHeight
+      const availableHeight = Math.min(
+        contentBottom - titleCardRect.bottom - 20, 
+        viewportHeight - titleCardRect.bottom - 40 
+      )
+
+      sidebarRef.current.style.height = `${Math.max(availableHeight, 480)}px`
     }
   }
 
@@ -232,6 +245,15 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
     }
   }, [loading, examData])
 
+  // Update sidebar when content expands (Read More/Less)
+  useEffect(() => {
+    if (!isMobile && examData) {
+      // Small delay to ensure DOM updates
+      const timeoutId = setTimeout(updateSidebarPosition, 100)
+      return () => clearTimeout(timeoutId)
+    }
+  }, [showFullText, isMobile, examData])
+
   // Toggle menu function
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -250,7 +272,6 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
       ? words.slice(0, wordLimit).join(" ") + "..."
       : text
   }
-
   // Generate or retrieve id
   useEffect(() => {
     let storedDeviceId = localStorage.getItem("deviceId")
@@ -285,6 +306,20 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
     }
   }, [title, category])
 
+  type AttemptData = {
+    title: string
+    category: string
+    attemptsLeft: number
+    totalAttempts: number
+    bestScore: number
+    averageCompletionTime?: number
+    attemptHistory?: Array<{
+      date: Date | string
+      score: number
+      completionTime: number
+    }>
+  }
+
   // Fetch attempt data
   useEffect(() => {
     const fetchAttemptData = async () => {
@@ -309,7 +344,6 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
           bestScore: data.bestScore ?? 0,
           averageCompletionTime: data.averageCompletionTime ?? 0,
           attemptHistory: data.attemptHistory || [],
-          isLocked: false,
         })
       } catch (error) {
         console.error("Error fetching attempt data:", error)
@@ -322,7 +356,6 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
           bestScore: 0,
           averageCompletionTime: 0,
           attemptHistory: [],
-          isLocked: false,
         })
       }
     }
@@ -330,25 +363,28 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
     fetchAttemptData()
   }, [deviceId, title, category])
 
+  const attemptsSection = () => (
+    <div className="mt-8 flex flex-col items-center">
+      <div className="flex items-center justify-center">
+        <img
+          src="/media/attemptarrow.png"
+          alt="Arrow Icon"
+          className="h-7 w-10 sm:h-8 sm:w-12 md:h-9 md:w-14"
+        />
+      </div>
+      <span className="mt-2 text-sm text-black sm:text-base">
+        <span className="font-bold text-black">
+          {attemptData
+            ? `${attemptData.totalAttempts - (attemptData.attemptsLeft || 0)}/${attemptData.totalAttempts}`
+            : "0/3"}
+        </span>{" "}
+        Attempt
+      </span>
+    </div>
+  )
+
   const handleStartTest = () => {
     if (!examData || !attemptData) return
-
-    // Check if test is locked
-    if (attemptData.isLocked) {
-      const lockoutEndTime = new Date(attemptData.lockoutEndTime || "")
-      const now = new Date()
-
-      if (now < lockoutEndTime) {
-        // Calculate time remaining in the lockout
-        const timeRemaining = Math.ceil(
-          (lockoutEndTime.getTime() - now.getTime()) / (1000 * 60 * 60)
-        )
-        toast.error(
-          `This test is locked for ${timeRemaining} more hour(s). Please try again later.`
-        )
-        return
-      }
-    }
 
     // Check if attempts are available
     if (attemptData.attemptsLeft <= 0) {
@@ -363,7 +399,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
         deviceId,
         title: examData.title,
         category: examData.category,
-        attemptsLeft: attemptData.attemptsLeft - 1,
+        attemptsLeft: attemptData.attemptsLeft,
       })
     )
 
@@ -455,30 +491,39 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
       {/* left & right grid */}
       <div
-        className="mx-auto mt-10 flex h-full w-full max-w-full flex-col items-start gap-4 px-4
+        className="mx-auto mt-10 flex h-full w-full max-w-full flex-col items-stretch gap-4 px-4
           sm:max-w-xl sm:px-6 md:max-w-2xl md:flex-row md:px-8 lg:max-w-3xl xl:max-w-4xl"
       >
-        {/* Left grid - Skill metrics */}
+        {/* Left grid */}
         <div
-          className="relative flex w-full flex-1 flex-col items-start justify-between rounded-3xl
-            bg-white p-4 shadow-lg sm:p-6 md:flex-row"
+          className="relative flex w-full flex-1 flex-col justify-between rounded-3xl bg-white p-4
+            shadow-lg sm:p-6 md:h-full md:flex-row"
         >
           {/* Left content */}
-          <div className="w-full space-y-5 md:w-2/5 md:flex-1 md:pr-6">
+          <div className="w-full space-y-1.5 md:w-[45%] md:pr-2">
+            <div className="mb-4 w-full">
+              <h2
+                className="text-lg font-semibold whitespace-nowrap text-black sm:text-xl md:text-xl
+                  lg:text-lg"
+              >
+                Assistant Criteria
+              </h2>
+            </div>
+
             {/* Skill */}
             <div className="relative">
-              <span className="text-base font-medium sm:text-lg">Skill</span>
+              <span className="text-base font-medium sm:text-sm">Skill</span>
               <div
-                className="relative mt-2 h-4 w-full min-w-[80px] rounded-full bg-[#AAF0EE] sm:min-w-[120px]
-                  md:min-w-[140px] lg:min-w-[160px]"
+                className="relative mt-2 h-3 w-full min-w-[80px] rounded-full bg-[#AAF0EE] sm:min-w-[60px]
+                  md:min-w-[80px] lg:min-w-[100px]"
               >
                 <div
                   className="h-full rounded-full bg-[#AAF0EE]"
                   style={{ width: `${skillPercent}%` }}
                 ></div>
                 <div
-                  className="absolute -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2
-                    border-black bg-[#AAF0EE] text-xs font-bold sm:h-8 sm:w-8"
+                  className="absolute -top-2 flex h-4 w-4 items-center justify-center rounded-full border-2
+                    border-black bg-[#AAF0EE] text-xs font-bold sm:h-7 sm:w-7"
                   style={{
                     left: `${skillPercent}%`,
                     transform: "translateX(-50%)",
@@ -491,12 +536,12 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
             {/* Knowledge */}
             <div className="relative">
-              <span className="text-base font-medium sm:text-lg">
+              <span className="text-base font-medium sm:text-sm">
                 Knowledge
               </span>
               <div
-                className="relative mt-2 h-4 w-full min-w-[80px] rounded-full bg-[#CCEEAA] sm:min-w-[120px]
-                  md:min-w-[140px] lg:min-w-[160px]"
+                className="relative mt-2 h-3 w-full min-w-[80px] rounded-full bg-[#CCEEAA] sm:min-w-[60px]
+                  md:min-w-[80px] lg:min-w-[100px]"
               >
                 <div
                   className="h-full rounded-full bg-[#CCEEAA]"
@@ -504,7 +549,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
                 ></div>
                 <div
                   className="absolute -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2
-                    border-black bg-[#CCEEAA] text-xs font-bold sm:h-8 sm:w-8"
+                    border-black bg-[#CCEEAA] text-xs font-bold sm:h-7 sm:w-7"
                   style={{
                     left: `${knowledgePercent}%`,
                     transform: "translateX(-50%)",
@@ -517,12 +562,12 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
             {/* Application */}
             <div className="relative">
-              <span className="text-base font-medium sm:text-lg">
+              <span className="text-base font-medium sm:text-sm">
                 Application
               </span>
               <div
-                className="relative mt-2 h-4 w-full min-w-[80px] rounded-full bg-[#DDBBF1] sm:min-w-[120px]
-                  md:min-w-[140px] lg:min-w-[160px]"
+                className="relative mt-2 h-3 w-full min-w-[80px] rounded-full bg-[#DDBBF1] sm:min-w-[60px]
+                  md:min-w-[80px] lg:min-w-[100px]"
               >
                 <div
                   className="h-full rounded-full bg-[#DDBBF1]"
@@ -530,7 +575,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
                 ></div>
                 <div
                   className="absolute -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2
-                    border-black bg-[#DDBBF1] text-xs font-bold sm:h-8 sm:w-8"
+                    border-black bg-[#DDBBF1] text-xs font-bold sm:h-7 sm:w-7"
                   style={{
                     left: `${applicationPercent}%`,
                     transform: "translateX(-50%)",
@@ -543,7 +588,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
           </div>
 
           {/* Horizontal Dashed Line */}
-          <div className="my-4 w-full md:hidden">
+          <div className="my-1 w-full md:hidden">
             <svg
               width="100%"
               height="2.5"
@@ -559,7 +604,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
           </div>
 
           {/* Vertical Dashed Line */}
-          <div className="hidden h-full md:mx-4 md:flex md:justify-center">
+          <div className="hidden h-full md:mx-1 md:flex md:justify-center">
             <svg
               width="2.5"
               height="200px"
@@ -588,20 +633,11 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
                   className="h-7 w-10 sm:h-8 sm:w-12 md:h-9 md:w-14"
                 />
               </div>
-              <span className="mt-2 text-sm text-black sm:text-base">
-                <span className="font-bold text-black">
-                  {attemptData
-                    ? `${attemptData.totalAttempts - (attemptData.attemptsLeft || 0)}/${attemptData.totalAttempts}`
-                    : "0/3"}
-                </span>{" "}
-                Attempt
+              <span className="mt-2 w-full text-center text-sm text-black sm:text-base">
+                <span className="block max-w-full truncate font-bold text-black">
+                  Score 80% & Above
+                </span>
               </span>
-              {attemptData?.isLocked && attemptData?.lockoutEndTime && (
-                <div className="mt-2 text-xs font-medium text-red-600 sm:text-sm">
-                  Locked until:{" "}
-                  {new Date(attemptData.lockoutEndTime).toLocaleString()}
-                </div>
-              )}
             </div>
 
             {/* Divider */}
@@ -652,8 +688,8 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
           </div>
         </div>
 
-        {/* Right grid - Exam description */}
-        <div className="flex h-full w-full flex-1 flex-col rounded-3xl bg-white p-4 shadow-lg sm:p-6">
+        {/* Right grid */}
+        <div className="flex w-full flex-1 flex-col rounded-3xl bg-white p-4 shadow-lg sm:p-6 md:h-full">
           <h2 className="text-base font-bold sm:text-lg md:text-xl">
             Why take this Exam?
           </h2>
@@ -662,14 +698,14 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
               {examData && showFullText
                 ? examData.why
                 : examData
-                  ? limitWords(examData.why, isMobile ? 15 : 35)
+                  ? limitWords(examData.why, isMobile ? 15 : 24)
                   : ""}
             </p>
             {examData && (
               <>
                 {!showFullText && examData.why.split(" ").length > 20 && (
                   <button
-                    className="mt-0 block text-xs text-gray-400 sm:text-sm md:text-base"
+                    className="mt-4 block text-xs text-gray-400 sm:text-sm md:text-base"
                     onClick={() => setShowFullText(true)}
                   >
                     Read More...
@@ -724,9 +760,8 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
         {/* Start button */}
         <div className="mt-6 flex justify-center sm:mt-8 md:mt-10">
           <div
-            className={`relative scale-75 cursor-pointer sm:scale-90 md:scale-100
-              ${isLocked ? "cursor-not-allowed opacity-50" : ""}`}
-            onClick={isLocked ? undefined : handleStartTest}
+            className="relative scale-75 cursor-pointer sm:scale-90 md:scale-100"
+            onClick={handleStartTest}
           >
             <svg
               width="150"
@@ -735,8 +770,8 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
             >
               <path
                 d="M10 10 L110 10 L60 90 Z"
-                fill={isLocked ? "gray" : "black"}
-                stroke={isLocked ? "gray" : "black"}
+                fill="black"
+                stroke="black"
                 strokeWidth="20"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -746,8 +781,8 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
               className="pointer-events-none absolute inset-0 mb-3 flex flex-col items-center
                 justify-center text-xl font-medium text-white"
             >
-              {isLocked ? "Locked" : "Start"} <br />
-              {isLocked ? "" : "Test"}
+              Start <br />
+              Test
             </div>
           </div>
         </div>
@@ -791,10 +826,16 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
           isMobile
             ? `fixed inset-y-0 right-0 z-40 w-[200px] transition-transform duration-300
               ease-in-out`
-            : "absolute top-8 right-0 w-[200px]"
+            : "absolute right-0 w-[200px]"
           } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"} flex
-          max-h-[480px] min-h-[480px] flex-col overflow-auto overflow-y-hidden
-          rounded-l-3xl bg-white p-3 shadow-lg`}
+          flex-col overflow-auto overflow-y-hidden rounded-l-3xl bg-white p-3 shadow-lg`}
+        style={{
+          top: isMobile ? "0" : `${sidebarOffset.top}px`,
+          height: isMobile ? "100%" : "auto",
+          minHeight: isMobile ? "auto" : "480px",
+          maxHeight: isMobile ? "100%" : "calc(100vh - 120px)",
+        }}
+        ref={sidebarRef}
       >
         {/* category name */}
         <div
@@ -810,7 +851,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
         </h2>
 
         {/* Timer and Divider */}
-        <div className="mt-14 mb-0 ml-2 flex items-center">
+        <div className="mt-13 mb-0 ml-2 flex items-center">
           {/* Timer */}
           <div className="relative z-20">
             <svg
@@ -842,24 +883,6 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
                 stroke="#FFCC66"
                 strokeWidth="4"
               />
-
-              {/* Middle Vertical Line */}
-              <line
-                x1="70"
-                y1="10.5"
-                x2="70"
-                y2="2.5"
-                stroke={theme === "dark" ? "#E5E7EB" : "#0C0C0C"}
-                strokeWidth="2"
-              />
-
-              {/* Top Horizontal Line */}
-              <path
-                d="M44 2H94"
-                stroke={theme === "dark" ? "#E5E7EB" : "#0C0C0C"}
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
             </svg>
 
             {/* Timer Value */}
@@ -890,21 +913,92 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
         {/* Status */}
         <div className="mt-1 space-y-1 pl-3">
+          {/* Not visited */}
           <div className="flex items-center justify-end gap-2">
             <span className="text-2sm w-40 text-right">Not visited</span>
-            <span className="h-4 w-4 rounded-full bg-[#D9D9D9]"></span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D9D9D9]">
+              <svg
+                className="h-4 w-4 text-white"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <line
+                  x1="18"
+                  y1="6"
+                  x2="6"
+                  y2="18"
+                />
+              </svg>
+            </span>
           </div>
+          {/* Saved answers */}
           <div className="flex items-center justify-end gap-2">
             <span className="text-2sm w-40 text-right">Saved answers</span>
-            <span className="h-4 w-4 rounded-full bg-[#CCEEAA]"></span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#CCEEAA]">
+              <svg
+                className="h-4.5 w-4.5 text-white"
+                fill="none"
+                stroke="white"
+                strokeWidth="3"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
           </div>
+          {/* Not sure */}
           <div className="flex items-center justify-end gap-2">
-            <span className="text-2sm w-40 text-right">Marked for Review</span>
-            <span className="h-4 w-4 rounded-full bg-[#AACCFF]"></span>
+            <span className="text-2sm w-40 text-right">Not sure</span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#AACCFF]">
+              <svg
+                className="h-4 w-1 text-white"
+                fill="white"
+                viewBox="0 0 4 16"
+              >
+                <rect
+                  x="1"
+                  y="0"
+                  width="2"
+                  height="10"
+                  rx="1"
+                />
+                <rect
+                  x="1"
+                  y="12"
+                  width="2"
+                  height="2"
+                  rx="1"
+                />
+              </svg>
+            </span>
           </div>
+          {/* Not answered */}
           <div className="flex items-center justify-end gap-2">
             <span className="text-2sm w-40 text-right">Not answered</span>
-            <span className="h-4 w-4 rounded-full bg-[#FFB1AA]"></span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FFB1AA]">
+              <svg
+                className="h-4 w-4 text-white"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <line
+                  x1="6"
+                  y1="6"
+                  x2="18"
+                  y2="18"
+                />
+                <line
+                  x1="6"
+                  y1="18"
+                  x2="18"
+                  y2="6"
+                />
+              </svg>
+            </span>
           </div>
         </div>
 

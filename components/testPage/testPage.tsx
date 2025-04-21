@@ -240,10 +240,9 @@ function ExamSidebar({
           isMobile
             ? `fixed inset-y-0 right-0 z-40 w-[230px] transition-transform duration-300
               ease-in-out`
-            : "absolute top-8 right-0 w-[230px]"
-          } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"} flex
-          max-h-[550px] min-h-[510px] flex-col overflow-auto overflow-y-hidden
-          rounded-l-3xl bg-white p-3 shadow-lg`}
+            : "absolute top-8 right-0 bottom-8 flex w-[230px] flex-col"
+          } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"}
+          overflow-hidden rounded-l-3xl bg-white p-3 shadow-lg`}
       >
         {/* category name */}
         <div
@@ -338,22 +337,93 @@ function ExamSidebar({
         </div>
 
         {/* Status */}
-        <div className="-mt-[1] space-y-1 pl-5">
-          <div className="flex items-center justify-end gap-3">
+        <div className="mt-1 space-y-1 pl-3">
+          {/* Not visited */}
+          <div className="flex items-center justify-end gap-2">
             <span className="text-2sm w-40 text-right">Not visited</span>
-            <span className="h-5 w-5 rounded-full bg-[#D9D9D9]"></span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D9D9D9]">
+              <svg
+                className="h-4 w-4 text-white"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <line
+                  x1="18"
+                  y1="6"
+                  x2="6"
+                  y2="18"
+                />
+              </svg>
+            </span>
           </div>
-          <div className="flex items-center justify-end gap-3">
+          {/* Saved answers */}
+          <div className="flex items-center justify-end gap-2">
             <span className="text-2sm w-40 text-right">Saved answers</span>
-            <span className="h-5 w-5 rounded-full bg-[#CCEEAA]"></span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#CCEEAA]">
+              <svg
+                className="h-4.5 w-4.5 text-white"
+                fill="none"
+                stroke="white"
+                strokeWidth="3"
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+            </span>
           </div>
-          <div className="flex items-center justify-end gap-3">
-            <span className="text-2sm w-40 text-right">Marked for Review</span>
-            <span className="h-5 w-5 rounded-full bg-[#AACCFF]"></span>
+          {/* Not sure */}
+          <div className="flex items-center justify-end gap-2">
+            <span className="text-2sm w-40 text-right">Not sure</span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#AACCFF]">
+              <svg
+                className="h-4 w-1 text-white"
+                fill="white"
+                viewBox="0 0 4 16"
+              >
+                <rect
+                  x="1"
+                  y="0"
+                  width="2"
+                  height="10"
+                  rx="1"
+                />
+                <rect
+                  x="1"
+                  y="12"
+                  width="2"
+                  height="2"
+                  rx="1"
+                />
+              </svg>
+            </span>
           </div>
-          <div className="flex items-center justify-end gap-3">
+          {/* Not answered */}
+          <div className="flex items-center justify-end gap-2">
             <span className="text-2sm w-40 text-right">Not answered</span>
-            <span className="h-5 w-5 rounded-full bg-[#FFB1AA]"></span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#FFB1AA]">
+              <svg
+                className="h-4 w-4 text-white"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <line
+                  x1="6"
+                  y1="6"
+                  x2="18"
+                  y2="18"
+                />
+                <line
+                  x1="6"
+                  y1="18"
+                  x2="18"
+                  y2="6"
+                />
+              </svg>
+            </span>
           </div>
         </div>
 
@@ -406,14 +476,15 @@ function ExamSidebar({
         </div>
 
         {/* Submit Button*/}
-        <div className="mt-2 mb-0 ml-5 flex justify-center">
+        <div className="sticky bottom-2 mt-auto mb-2 ml-5 flex justify-center">
+          {" "}
           <motion.div
             className="relative flex justify-center"
             onHoverStart={() => setSubmitHovered(true)}
             onHoverEnd={() => setSubmitHovered(false)}
           >
             <motion.div
-              className="absolute z-0 h-11 w-35 rounded-full md:h-10 md:w-35"
+              className="absolute z-0 h-10 w-35 rounded-full"
               initial={{
                 rotate: -3,
                 backgroundColor: theme === "dark" ? "#FFCC66" : "#000000",
@@ -435,9 +506,9 @@ function ExamSidebar({
             />
 
             <button
-              className="relative z-8 flex h-8 w-35 items-center justify-center rounded-full border-2
-                border-black bg-white text-sm font-medium text-gray-800 hover:bg-white md:h-10
-                md:w-35 md:text-base lg:text-lg"
+              className="relative z-8 flex h-10 w-35 items-center justify-center rounded-full border-2
+                border-black bg-white text-sm font-medium text-gray-800 hover:bg-white
+                md:text-base"
               onClick={() => handleSubmit(false)}
               disabled={submitted}
             >
@@ -648,9 +719,9 @@ export default function Exam2({ title, category }: Props) {
     return <ResultPage />
   }
   return (
-    <div className="flex min-h-screen flex-col overflow-y-hidden bg-gray-100 md:flex-row">
+    <div className="flex min-h-screen flex-col overflow-y-hidden bg-gray-100 md:relative md:flex-row">
       {/* Main content */}
-      <div className="flex flex-1 flex-col items-center px-4 md:px-8">
+      <div className="flex flex-1 flex-col items-center px-4 pb-4 md:px-8 md:pb-8">
         {/* Title Card */}
         <motion.div
           className="relative z-20 -mb-4 flex justify-center py-2 md:-mb-6 md:py-4"
@@ -690,7 +761,8 @@ export default function Exam2({ title, category }: Props) {
 
         {/* Main Question Container */}
         <div
-          className="relative z-10 w-full max-w-full md:max-w-2xl lg:max-w-3xl"
+          className="relative z-10 flex w-full max-w-full flex-grow flex-col md:max-w-2xl
+            lg:max-w-3xl"
           style={{ marginTop: "-1.5rem" }}
         >
           {/* Timer */}
@@ -751,80 +823,85 @@ export default function Exam2({ title, category }: Props) {
 
           {/* Questions Container */}
           <div
-            className="mb-16 flex flex-col rounded-4xl bg-white px-3 pt-12 pb-6 shadow-lg md:px-5
-              md:pt-16"
+            className="mb-4 flex flex-grow flex-col rounded-4xl bg-white px-3 pt-12 pb-6 shadow-lg
+              md:h-full md:px-5 md:pt-16"
           >
-            <div className="flex-grow">
-              {/* Check if examData is null or loading */}
-              {loading || !examData ? (
-                <p className="text-center text-black">Loading questions...</p>
-              ) : (
-                // Render only the current question
-                <div
-                  key={activeQuestion}
-                  id={`question-${activeQuestion}`}
-                  className="mb-2"
-                  onMouseEnter={() => {
-                    if (!visitedQuestions.includes(activeQuestion)) {
-                      setVisitedQuestions((prev) => [...prev, activeQuestion])
-                    }
-                  }}
-                >
-                  <h2 className="text-black-800 mb-4 text-xl font-semibold">
-                    {activeQuestion + 1}.{" "}
-                    {examData?.questions?.[activeQuestion]?.question}
-                  </h2>
+            <div className="flex flex-grow flex-col justify-between">
+              <div className="flex-grow">
+                {loading || !examData ? (
+                  <p className="text-center text-black">Loading questions...</p>
+                ) : (
+                  <div
+                    key={activeQuestion}
+                    id={`question-${activeQuestion}`}
+                    className="flex h-full flex-col"
+                    onMouseEnter={() => {
+                      if (!visitedQuestions.includes(activeQuestion)) {
+                        setVisitedQuestions((prev) => [...prev, activeQuestion])
+                      }
+                    }}
+                  >
+                    <h2 className="text-black-800 mb-4 text-xl font-semibold">
+                      {activeQuestion + 1}.{" "}
+                      {examData?.questions?.[activeQuestion]?.question}
+                    </h2>
 
-                  {/* Render options */}
-                  {examData?.questions?.[activeQuestion]?.options?.map(
-                    (option, optionIndex) => (
-                      <div
-                        key={optionIndex}
-                        className={`my-2 cursor-pointer rounded-4xl border p-3 pl-10 ${
-                          selectedOptions[activeQuestion] === option
-                            ? "border-black bg-[#FFCC66] text-gray-800"
-                            : "border-black bg-white text-black"
-                          }`}
-                        onClick={() =>
-                          handleOptionSelect(activeQuestion, option)
-                        }
-                      >
-                        <span className="mr-2 font-bold text-black">
-                          {optionLabels[optionIndex]}.
-                        </span>
-                        <span className="font-medium text-black">{option}</span>
-                      </div>
-                    )
-                  )}
-
-                  {/* Buttons */}
-                  <div className="mt-8 mb-5 flex gap-4">
-                    <button
-                      className={`rounded-full border px-4 py-2 text-sm ${
-                        markedQuestions.includes(activeQuestion)
-                          ? "bg-[#AACCFF] text-black"
-                          : "bg-black text-white"
-                        }`}
-                      onClick={() => handleMarkQuestion(activeQuestion)}
-                    >
-                      {markedQuestions.includes(activeQuestion)
-                        ? "Unmark"
-                        : "Mark for Review"}
-                    </button>
-
-                    {/* display next if its not last Q. */}
-                    {activeQuestion <
-                      (examData?.questions?.length ?? 0) - 1 && (
-                      <button
-                        className="ml-auto rounded-full bg-black px-10 py-2 text-sm text-white"
-                        onClick={() => setActiveQuestion((prev) => prev + 1)}
-                      >
-                        Next
-                      </button>
-                    )}
+                    <div className="flex-grow">
+                      {examData?.questions?.[activeQuestion]?.options?.map(
+                        (option, optionIndex) => (
+                          <div
+                            key={optionIndex}
+                            className={`my-2 cursor-pointer rounded-4xl border p-3 pl-10 ${
+                              selectedOptions[activeQuestion] === option
+                                ? "border-black bg-[#FFCC66] text-gray-800"
+                                : "border-black bg-white text-black"
+                              }`}
+                            onClick={() =>
+                              handleOptionSelect(activeQuestion, option)
+                            }
+                          >
+                            <span className="mr-2 font-bold text-black">
+                              {optionLabels[optionIndex]}.
+                            </span>
+                            <span className="font-medium text-black">
+                              {option}
+                            </span>
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+              {/* Buttons */}
+              <div className="mt-auto mb-2 flex justify-end gap-4 pt-4">
+                {activeQuestion < (examData?.questions?.length ?? 0) - 1 && (
+                  <button
+                    className={`rounded-full border px-4 py-2 text-sm ${
+                    markedQuestions.includes(activeQuestion)
+                        ? "bg-[#AACCFF] text-black"
+                        : "bg-black text-white"
+                    }`}
+                    onClick={() => {
+                      handleMarkQuestion(activeQuestion)
+                      setActiveQuestion((prev) => prev + 1)
+                    }}
+                  >
+                    {markedQuestions.includes(activeQuestion)
+                      ? "Unmark & Next"
+                      : "Mark for Review & Next"}
+                  </button>
+                )}
+
+                {activeQuestion < (examData?.questions?.length ?? 0) - 1 && (
+                  <button
+                    className="rounded-full bg-black px-5 py-2 text-sm text-white"
+                    onClick={() => setActiveQuestion((prev) => prev + 1)}
+                  >
+                    Save & Next
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>

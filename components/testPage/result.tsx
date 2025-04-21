@@ -11,6 +11,14 @@ type QuestionType = {
   correctAnswer: string
 }
 
+type QuestionReviewType = {
+  question: string
+  options: string[]
+  correctAnswer: string
+  userAnswer: string
+  index: number
+}
+
 type ExamData = {
   title: string
   timer: number
@@ -47,9 +55,9 @@ const ResultPage = () => {
   const [completionTime, setCompletionTime] = useState<number | null>(null)
   const [timeDiffMs, setTimeDiffMs] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
+  const [retakeHovered, setRetakeHovered] = useState(false)
   const [theme, setTheme] = useState<string>("light")
   const [attemptData, setAttemptData] = useState<AttemptData | null>(null)
-  const [showWrongAnswers, setShowWrongAnswers] = useState<boolean>(false)
   const [wrongQuestions, setWrongQuestions] = useState<
     Array<{
       question: string
@@ -62,26 +70,27 @@ const ResultPage = () => {
   const [recommendedExams, setRecommendedExams] = useState<RecommendedExam[]>(
     []
   )
-  const [activeTab, setActiveTab] = useState<string>("results")
   const [hovered, setHovered] = useState<boolean>(false)
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [allQuestions, setAllQuestions] = useState<QuestionReviewType[]>([])
+  const [activeTab, setActiveTab] = useState<
+    "results" | "review-all" | "review-wrong"
+  >("results")
 
   // Get title, category and deviceId
   const [deviceId, setDeviceId] = useState<string>("")
 
-  // Skill percentages calculated based on the score
+  // Skill percentages 
   const skillPercent = score ? Math.min(100, Math.max(0, score + 10)) : 0
   const knowledgePercent = score ? Math.min(100, Math.max(0, score - 5)) : 0
   const applicationPercent = score ? Math.min(100, Math.max(0, score - 10)) : 0
 
   useEffect(() => {
-    // Get theme from localStorage
     const storedTheme = localStorage.getItem("theme") || "light"
     setTheme(storedTheme)
     document.documentElement.classList.toggle("dark", storedTheme === "dark")
 
-    // Get deviceId from localStorage
     const storedDeviceId = localStorage.getItem("deviceId")
     if (storedDeviceId) {
       setDeviceId(storedDeviceId)
@@ -130,18 +139,30 @@ const ResultPage = () => {
 
     let correctCount = 0
     let totalQuestions = examData.questions.length
-    const wrongQuestionsData: any[] = []
+    const wrongQuestionsData: QuestionReviewType[] = []
+    const allQuestionsData: QuestionReviewType[] = []
 
     examData.questions.forEach((question, index) => {
-      if (storedAnswers[index] === question.correctAnswer) {
+      const userAnswer = storedAnswers[index] || "Not answered"
+
+      // Populate all questions data
+      allQuestionsData.push({
+        question: question.question,
+        options: question.options,
+        correctAnswer: question.correctAnswer,
+        userAnswer: userAnswer,
+        index: index,
+      })
+
+      // Populate wrong questions data
+      if (userAnswer === question.correctAnswer) {
         correctCount++
       } else {
-        // Store wrong questions for review
         wrongQuestionsData.push({
           question: question.question,
           options: question.options,
           correctAnswer: question.correctAnswer,
-          userAnswer: storedAnswers[index] || "Not answered",
+          userAnswer: userAnswer,
           index: index,
         })
       }
@@ -152,10 +173,11 @@ const ResultPage = () => {
     // Calculate percentage score
     const percentage = (correctCount / totalQuestions) * 100
 
-    setScore(percentage)
+    setScore((correctCount / totalQuestions) * 100)
     setCorrectAnswers(correctCount)
     setWrongAnswers(wrongCount)
     setWrongQuestions(wrongQuestionsData)
+    setAllQuestions(allQuestionsData)
 
     // Trigger confetti if score is good
     if (percentage >= 70) {
@@ -186,10 +208,15 @@ const ResultPage = () => {
             }),
           })
 
-          if (response.ok) {
-            const data = await response.json()
-            setAttemptData(data)
+          if (!response.ok) {
+            const errorText = await response.text()
+            throw new Error(
+              `Failed to save attempt: ${response.status} - ${errorText}`
+            )
           }
+
+          const data = await response.json()
+          setAttemptData(data)
         } catch (error) {
           console.error("Error saving attempt:", error)
         }
@@ -264,42 +291,46 @@ const ResultPage = () => {
     setLoading(false)
   }, [router, searchParams, deviceId, timeDiffMs])
 
-  const handleReturnToDashboard = () => {
-    // Clear result data but keep deviceId
-    localStorage.removeItem("selectedOptions")
-    localStorage.removeItem("examData")
-    localStorage.removeItem("currentAttempt")
-    localStorage.removeItem("examStartTime")
-    localStorage.removeItem("examEndTime")
-    router.push("/")
-  }
+  // const handleReturnToDashboard = () => {
+  //   // Clear result data but keep deviceId
+  //   localStorage.removeItem("selectedOptions")
+  //   localStorage.removeItem("examData")
+  //   localStorage.removeItem("currentAttempt")
+  //   localStorage.removeItem("examStartTime")
+  //   localStorage.removeItem("examEndTime")
+  //   router.push("/")
+  // }
 
   const handleRetakeExam = () => {
     // Keep exam data but clear answers
     localStorage.removeItem("selectedOptions")
     localStorage.removeItem("examStartTime")
     localStorage.removeItem("examEndTime")
-    router.push("/testPage")
-  }
 
-  const navigateToExam = (title: string, category: string) => {
+    // Pass title and category as URL parameters
     router.push(
-      `/description?title=${encodeURIComponent(title)}&category=${encodeURIComponent(category)}`
+      `/testPage?title=${encodeURIComponent(examTitle)}&category=${encodeURIComponent(examCategory)}`
     )
   }
 
-  const getDifficultyColor = (difficulty: string) => {
-    if (!difficulty) return { bg: "bg-gray-100", text: "text-gray-800" }
+  // const navigateToExam = (title: string, category: string) => {
+  //   router.push(
+  //     `/description?title=${encodeURIComponent(title)}&category=${encodeURIComponent(category)}`
+  //   )
+  // }
 
-    difficulty = difficulty.toLowerCase()
-    if (difficulty === "easy")
-      return { bg: "bg-[#F3FFE7]", text: "text-[#567F2D]" }
-    if (difficulty === "medium")
-      return { bg: "bg-[#FFF8D0]", text: "text-[#CCA028]" }
-    if (difficulty === "hard")
-      return { bg: "bg-[#FFEAE7]", text: "text-[#7F352D]" }
-    return { bg: "bg-gray-100", text: "text-gray-800" }
-  }
+  // const getDifficultyColor = (difficulty: string) => {
+  //   if (!difficulty) return { bg: "bg-gray-100", text: "text-gray-800" }
+
+  //   difficulty = difficulty.toLowerCase()
+  //   if (difficulty === "easy")
+  //     return { bg: "bg-[#F3FFE7]", text: "text-[#567F2D]" }
+  //   if (difficulty === "medium")
+  //     return { bg: "bg-[#FFF8D0]", text: "text-[#CCA028]" }
+  //   if (difficulty === "hard")
+  //     return { bg: "bg-[#FFEAE7]", text: "text-[#7F352D]" }
+  //   return { bg: "bg-gray-100", text: "text-gray-800" }
+  // }
 
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60)
@@ -356,7 +387,7 @@ const ResultPage = () => {
       ) : (
         <>
           {/* Tabs */}
-          <div className="mt-8 flex w-full max-w-lg overflow-hidden rounded-3xl border border-gray-200">
+          {/* <div className="mt-8 flex w-full max-w-lg overflow-hidden rounded-3xl border border-gray-200">
             <button
               className={`flex-1 py-3 font-medium transition-colors
                 ${activeTab === "results" ? "bg-[#FFCC66] text-black" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
@@ -378,11 +409,11 @@ const ResultPage = () => {
             >
               Next Exam
             </button>
-          </div>
+          </div> */}
 
           {/* Main Content Area */}
           <motion.div
-            className="mt-6 w-full max-w-4xl"
+            className="mt-10 w-full max-w-4xl"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -396,7 +427,7 @@ const ResultPage = () => {
                 >
                   {/* Score */}
                   <div className="flex flex-col items-center">
-                    <div className="relative flex h-28 w-28 items-center justify-center">
+                    <div className="relative ml-6 flex h-28 w-28 items-center justify-center">
                       <svg
                         viewBox="0 0 100 100"
                         className="h-full w-full"
@@ -431,16 +462,16 @@ const ResultPage = () => {
                         {score!.toFixed(0)}%
                       </span>
                     </div>
-                    <p className="text-1sm mt-2 text-black">
-                      Total Percentage Scored
+                    <p className="text-1sm mt-2 ml-2 font-bold text-black">
+                      Score
                     </p>
                   </div>
 
                   {/* Dashed Line */}
-                  <div className="ml-8 flex h-full justify-center">
+                  <div className="ml-10 flex h-full justify-center">
                     <svg
                       width="2.5"
-                      height="220px"
+                      height="200px"
                       className="stroke-black"
                     >
                       <path
@@ -454,46 +485,11 @@ const ResultPage = () => {
 
                   {/* Right Side */}
                   <div className="ml-6 flex flex-col items-center space-y-2">
-                    <div className="flex flex-col items-center">
-                      <div className="flex items-center space-x-2">
-                        <img
-                          src="/media/attemptarrow.png"
-                          alt="Arrow Icon"
-                          className="h-12 w-18"
-                        />
-                      </div>
-                      <span className="mt-2 text-black">
-                        <span className="font-bold text-black">
-                          {attemptData
-                            ? `${Math.max(0, attemptData.totalAttempts - attemptData.attemptsLeft)}/${attemptData.totalAttempts}`
-                            : "0/3"}
-                        </span>{" "}
-                        Attempt
-                      </span>
-                    </div>
-
-                    {/* Dashed Line */}
-                    <div className="w-full">
-                      <svg
-                        width="100%"
-                        height="2.5"
-                        className="stroke-black"
-                      >
-                        <path
-                          strokeDasharray="9 9"
-                          strokeLinecap="round"
-                          strokeWidth="3"
-                          d="M1.5 1.5h195"
-                        />
-                      </svg>
-                    </div>
-
                     {/* Time Taken */}
-                    <div className="relative mt-2 flex flex-col items-center text-center">
-                      <p className="text-black">Time Taken</p>
-                      <div className="relative mt-1 flex items-center justify-center">
+                    <div className="relative flex flex-col items-center text-center">
+                      <div className="relative flex items-center justify-center">
                         <svg
-                          width="130"
+                          width="100"
                           height="70"
                           viewBox="0 0 140 70"
                           fill="none"
@@ -549,100 +545,155 @@ const ResultPage = () => {
                               : "N/A"}
                         </p>
                       </div>
+                      <p className="font-bold text-black">Time Taken</p>
+                    </div>
+                    {/* <div className="flex flex-col items-center">
+                      <div className="flex items-center space-x-2">
+                        <img
+                          src="/media/attemptarrow.png"
+                          alt="Arrow Icon"
+                          className="h-12 w-20"
+                        />
+                      </div>
+                      <span className="mt-2 text-black">
+                        <span className="font-bold text-black">
+                          {attemptData
+                            ? `${Math.max(0, attemptData.totalAttempts - attemptData.attemptsLeft)}/${attemptData.totalAttempts}`
+                            : "0/3"}
+                        </span>{" "}
+                        Attempt
+                      </span>
+                    </div> */}
+
+                    {/* Dashed Line */}
+                    <div className="w-full">
+                      <svg
+                        width="195%"
+                        height="2.5"
+                        className="stroke-black"
+                      >
+                        <path
+                          strokeDasharray="9 9"
+                          strokeLinecap="round"
+                          strokeWidth="3"
+                          d="M1.5 1.5h195"
+                        />
+                      </svg>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                      <span className="mt-2 text-center text-black">
+                        <span className="block text-xl font-bold text-black">
+                          {attemptData
+                            ? `${Math.max(0, attemptData.totalAttempts - attemptData.attemptsLeft)}/${attemptData.totalAttempts}`
+                            : "0/3"}
+                        </span>
+                        <span className="block text-sm font-bold text-black">
+                          Attempts
+                        </span>
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 {/* Right: Results Summary */}
                 <div className="flex-1 rounded-3xl bg-white p-6 shadow-lg">
-                  <h2 className="mb-3 text-xl font-bold">Results Summary</h2>
+                  <h2 className="mb-6 text-center text-xl font-bold">
+                    Result Summary
+                  </h2>
 
-                  <div className="mt-4 grid w-full grid-cols-3 gap-4">
+                  <div className="mt-4 grid w-full grid-cols-3 gap-4 text-center">
+                    {/* Total */}
                     <motion.div
-                      className="rounded-xl bg-gray-100 p-4"
+                      className="flex h-30 flex-col justify-between rounded-3xl bg-gray-100 p-6"
                       whileHover={{ scale: 1.05 }}
                     >
-                      <p className="text-lg text-gray-800">Total</p>
-                      <p className="text-2xl font-bold text-gray-900">
+                      <p className="text-4xl font-bold text-gray-900">
                         {correctAnswers + wrongAnswers}
                       </p>
-                    </motion.div>
-
-                    <motion.div
-                      className="rounded-xl bg-green-100 p-4"
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <p className="text-lg text-green-800">Correct</p>
-                      <p className="text-2xl font-bold text-green-900">
-                        {correctAnswers}
+                      <p className="text-base font-medium text-gray-700">
+                        Total
                       </p>
                     </motion.div>
 
+                    {/* Correct */}
                     <motion.div
-                      className="cursor-pointer rounded-xl bg-red-100 p-4 transition-colors hover:bg-red-200"
+                      className="flex h-30 flex-col justify-between rounded-2xl bg-green-100 p-6"
                       whileHover={{ scale: 1.05 }}
-                      onClick={() => {
-                        setActiveTab("details")
-                        setShowWrongAnswers(true)
-                      }}
                     >
-                      <p className="text-lg text-red-800">Wrong</p>
-                      <p className="text-2xl font-bold text-red-900">
+                      <p className="text-4xl font-bold text-green-800">
+                        {correctAnswers}
+                      </p>
+                      <p className="text-base font-medium text-green-700">
+                        Correct
+                      </p>
+                    </motion.div>
+
+                    {/* Wrong */}
+                    <motion.div
+                      className="flex h-30 cursor-pointer flex-col justify-between rounded-2xl bg-red-100 p-6
+                        transition-colors hover:bg-red-200"
+                      whileHover={{ scale: 1.05 }}
+                      onClick={() => setActiveTab("review-wrong")}
+                    >
+                      <p className="text-4xl font-bold text-red-800">
                         {wrongAnswers}
+                      </p>
+                      <p className="text-base font-medium text-red-700">
+                        Wrong
                       </p>
                     </motion.div>
                   </div>
-
-                  {attemptData && (
-                    <motion.div
-                      className="mt-4 w-full rounded-3xl border border-[#DFE1E8] bg-gray-100 p-3"
-                      whileHover={{ scale: 1.02 }}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-lg text-black">Attempts Left</p>
-                          <p className="text-2xl font-bold text-black">
-                            {`${Math.max(0, attemptData.totalAttempts - attemptData.attemptsLeft)}/${attemptData.totalAttempts}`}
-                          </p>
-                        </div>
-                        <div className="flex h-15 w-16 items-center justify-center rounded-full bg-gray-300">
-                          <p className="text-xl font-bold text-black">
-                            {attemptData.bestScore.toFixed(0)}%
-                          </p>
-                          <p className="absolute mt-8 text-xs text-black">
-                            Best
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
                 </div>
               </div>
             )}
+            <div className="mt-8 text-center">
+              <p
+                className="cursor-pointer text-lg font-semibold text-black underline hover:text-blue-900"
+                onClick={() => setActiveTab("review-all")}
+              >
+                Review All Answers
+              </p>
+            </div>
 
-            {/* Wrong Answers Section */}
-            {activeTab === "details" && (
+            {/* Review Section */}
+            {(activeTab === "review-all" || activeTab === "review-wrong") && (
               <div className="w-full rounded-3xl bg-white p-6 shadow-lg">
-                {wrongQuestions.length > 0 ? (
-                  <>
-                    <h2 className="mb-4 text-2xl font-bold text-gray-800">
-                      Questions You Missed
-                    </h2>
-                    <div className="space-y-6">
-                      {wrongQuestions.map((item, idx) => (
-                        <motion.div
-                          key={idx}
-                          className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow
-                            hover:shadow-md"
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: idx * 0.1 }}
-                        >
-                          <p className="mb-3 text-lg font-semibold">
-                            Question {item.index + 1}: {item.question}
-                          </p>
-                          <div className="mb-4 grid grid-cols-1 gap-2">
-                            {item.options.map((option, optIdx) => (
+                <h2 className="mb-4 text-2xl font-bold text-gray-800">
+                  {activeTab === "review-all"
+                    ? "Review All Answers"
+                    : "Wrong Answers Marked"}
+                </h2>
+
+                <p
+                  className="mb-4 cursor-pointer text-lg font-semibold text-black underline
+                    hover:text-blue-800"
+                  onClick={() => setActiveTab("results")}
+                >
+                  Back to Result
+                </p>
+
+                {(activeTab === "review-all" ? allQuestions : wrongQuestions)
+                  .length > 0 ? (
+                  <div className="space-y-6">
+                    {(activeTab === "review-all"
+                      ? allQuestions
+                      : wrongQuestions
+                    ).map((item, idx) => (
+                      <motion.div
+                        key={idx}
+                        className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition-shadow
+                          hover:shadow-md"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: idx * 0.05 }}
+                      >
+                        <p className="mb-3 text-lg font-semibold">
+                          Question {item.index + 1}: {item.question}
+                        </p>
+                        <div className="mb-4 grid grid-cols-1 gap-2">
+                          {item.options.map(
+                            (option: string, optIdx: number) => (
                               <div
                                 key={optIdx}
                                 className={`rounded-lg p-3 ${
@@ -666,53 +717,26 @@ const ResultPage = () => {
                                     {String.fromCharCode(65 + optIdx)}
                                   </span>
                                   <span>{option}</span>
+
                                   {option === item.correctAnswer && (
                                     <span className="ml-auto flex items-center text-green-700">
-                                      <svg
-                                        className="mr-1 h-5 w-5"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth="2"
-                                          d="M5 13l4 4L19 7"
-                                        ></path>
-                                      </svg>
-                                      Correct
+                                      ✅ Correct
                                     </span>
                                   )}
                                   {option === item.userAnswer &&
                                     option !== item.correctAnswer && (
                                       <span className="ml-auto flex items-center text-red-700">
-                                        <svg
-                                          className="mr-1 h-5 w-5"
-                                          fill="none"
-                                          stroke="currentColor"
-                                          viewBox="0 0 24 24"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M6 18L18 6M6 6l12 12"
-                                          ></path>
-                                        </svg>
-                                        Your answer
+                                        ❌ Your Answer
                                       </span>
                                     )}
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </>
+                            )
+                          )}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                 ) : (
                   <div className="py-16 text-center">
                     <svg
@@ -727,7 +751,7 @@ const ResultPage = () => {
                         strokeLinejoin="round"
                         strokeWidth="2"
                         d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
+                      />
                     </svg>
                     <h3 className="mb-2 text-2xl font-bold text-gray-800">
                       Perfect Score!
@@ -741,8 +765,8 @@ const ResultPage = () => {
             )}
 
             {/* Recommended Exams Section */}
-            {activeTab === "recommended" && (
-              <div className="w-full rounded-3xl bg-white p-6 shadow-lg">
+            {/* {activeTab === "recommended" && ( */}
+            {/* <div className="w-full rounded-3xl bg-white p-6 shadow-lg">
                 <h2 className="mb-4 text-2xl font-bold text-gray-800">
                   Recommended Next Steps
                 </h2>
@@ -760,9 +784,9 @@ const ResultPage = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                      >
-                        {/* Exam Header */}
-                        <div className="mb-3 flex items-start justify-between">
+                      > */}
+            {/* Exam Header */}
+            {/* <div className="mb-3 flex items-start justify-between">
                           <h3 className="text-lg font-bold text-gray-800 transition-colors group-hover:text-blue-700">
                             {exam.title}
                           </h3>
@@ -778,25 +802,25 @@ const ResultPage = () => {
                             />
                             {exam.difficulty}
                           </div>
-                        </div>
+                        </div> */}
 
-                        {/* Tags Section */}
-                        <div className="mb-3 flex flex-wrap gap-2">
+            {/* Tags Section */}
+            {/* <div className="mb-3 flex flex-wrap gap-2">
                           <span className="rounded-full bg-blue-100 px-2 py-1 text-xs">
                             {exam.category}
                           </span>
                           <span className="rounded-full bg-purple-100 px-2 py-1 text-xs">
                             {exam.level}
                           </span>
-                        </div>
+                        </div> */}
 
-                        {/* Description */}
-                        <p className="text-sm text-gray-600">
+            {/* Description */}
+            {/* <p className="text-sm text-gray-600">
                           Take this exam to continue improving your skills.
-                        </p>
+                        </p> */}
 
-                        {/* Start Exam Button */}
-                        <div className="mt-3 flex justify-end">
+            {/* Start Exam Button */}
+            {/* <div className="mt-3 flex justify-end">
                           <span className="flex items-center text-sm text-blue-600 group-hover:underline">
                             Start Exam
                             <svg
@@ -816,45 +840,61 @@ const ResultPage = () => {
                           </span>
                         </div>
                       </motion.div>
-                    ))}
-                  </div>
+                    ))} */}
+            {/* </div>
                 ) : (
-                  <div className="rounded-xl bg-gray-50 p-6 text-center">
-                    <p className="text-gray-600">
-                      No recommended exams available at this time.
-                    </p>
-                    <p className="mt-2 text-sm text-gray-500">
-                      Check back later for new content!
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+                  // <div className="rounded-xl bg-gray-50 p-6 text-center">
+                  //   <p className="text-gray-600">
+                  //     No recommended exams available at this time.
+                  //   </p>
+                  //   <p className="mt-2 text-sm text-gray-500">
+                  //     Check back later for new content!
+                  //   </p>
+                  // </div> */}
+            {/* )} */}
+            {/* </div> */}
+            {/* )} */}
           </motion.div>
 
           {/* Action Buttons */}
           <div className="mt-10 flex justify-center gap-6">
-            {/* Return to Dashboard Button */}
-            <motion.button
-              className="rounded-full border-2 border-black bg-[#FFCC66] px-8 py-3 font-semibold
-                text-black shadow-md transition-colors hover:bg-[#FFD580] hover:shadow-lg"
-              onClick={handleReturnToDashboard}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            {/* Retake Button */}
+            <motion.div
+              className="relative flex justify-center"
+              onHoverStart={() => setRetakeHovered(true)}
+              onHoverEnd={() => setRetakeHovered(false)}
             >
-              Return to Dashboard
-            </motion.button>
+              <motion.div
+                className="absolute z-0 h-10 w-35 rounded-full"
+                initial={{
+                  rotate: -3,
+                  backgroundColor: theme === "dark" ? "#FFCC66" : "#000000",
+                }}
+                animate={{
+                  backgroundColor: retakeHovered
+                    ? "#FFCC66"
+                    : theme === "dark"
+                      ? "#000000"
+                      : "#000000",
+                }}
+                transition={{
+                  backgroundColor: {
+                    duration: 0.3,
+                    ease: "easeInOut",
+                  },
+                }}
+                style={{ transformOrigin: "center" }}
+              />
 
-            {/* Retake Exam Button */}
-            <motion.button
-              className="rounded-full border-2 border-black bg-white px-8 py-3 font-semibold text-black
-                shadow-md transition-colors hover:bg-gray-100 hover:shadow-lg"
-              onClick={handleRetakeExam}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Retake Exam
-            </motion.button>
+              <button
+                className="relative z-8 flex h-10 w-35 items-center justify-center rounded-full border-2
+                  border-black bg-[#FFCC66] text-sm font-medium text-gray-800 hover:bg-white
+                  md:text-base"
+                onClick={handleRetakeExam}
+              >
+                Retake Exam
+              </button>
+            </motion.div>
           </div>
         </>
       )}
