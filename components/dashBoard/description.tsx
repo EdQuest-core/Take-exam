@@ -168,7 +168,7 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
       const containerRect = mainContainerRef.current.getBoundingClientRect()
 
       // Find the bottom of the content section with the start button
-      const startButtonSection = document.querySelector(".mt-6") 
+      const startButtonSection = document.querySelector(".mt-6")
       const contentBottom = startButtonSection
         ? startButtonSection.getBoundingClientRect().bottom
         : containerRect.bottom
@@ -182,8 +182,8 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
       const viewportHeight = window.innerHeight
       const availableHeight = Math.min(
-        contentBottom - titleCardRect.bottom - 20, 
-        viewportHeight - titleCardRect.bottom - 40 
+        contentBottom - titleCardRect.bottom - 20,
+        viewportHeight - titleCardRect.bottom - 40
       )
 
       sidebarRef.current.style.height = `${Math.max(availableHeight, 480)}px`
@@ -500,109 +500,24 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
             shadow-lg sm:p-6 md:h-full md:flex-row"
         >
           {/* Left content */}
-          <div className="w-full space-y-1.5 md:w-[45%] md:pr-2">
-            <div className="mb-4 w-full">
-              <h2
-                className="text-lg font-semibold whitespace-nowrap text-black sm:text-xl md:text-xl
-                  lg:text-lg"
-              >
-                Assistant Criteria
-              </h2>
-            </div>
 
-            {/* Skill */}
-            <div className="relative">
-              <span className="text-base font-medium sm:text-sm">Skill</span>
-              <div
-                className="relative mt-2 h-3 w-full min-w-[80px] rounded-full bg-[#AAF0EE] sm:min-w-[60px]
-                  md:min-w-[80px] lg:min-w-[100px]"
-              >
-                <div
-                  className="h-full rounded-full bg-[#AAF0EE]"
-                  style={{ width: `${skillPercent}%` }}
-                ></div>
-                <div
-                  className="absolute -top-2 flex h-4 w-4 items-center justify-center rounded-full border-2
-                    border-black bg-[#AAF0EE] text-xs font-bold sm:h-7 sm:w-7"
-                  style={{
-                    left: `${skillPercent}%`,
-                    transform: "translateX(-50%)",
-                  }}
-                >
-                  {skillPercent}%
-                </div>
-              </div>
-            </div>
-
-            {/* Knowledge */}
-            <div className="relative">
-              <span className="text-base font-medium sm:text-sm">
-                Knowledge
-              </span>
-              <div
-                className="relative mt-2 h-3 w-full min-w-[80px] rounded-full bg-[#CCEEAA] sm:min-w-[60px]
-                  md:min-w-[80px] lg:min-w-[100px]"
-              >
-                <div
-                  className="h-full rounded-full bg-[#CCEEAA]"
-                  style={{ width: `${knowledgePercent}%` }}
-                ></div>
-                <div
-                  className="absolute -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2
-                    border-black bg-[#CCEEAA] text-xs font-bold sm:h-7 sm:w-7"
-                  style={{
-                    left: `${knowledgePercent}%`,
-                    transform: "translateX(-50%)",
-                  }}
-                >
-                  {knowledgePercent}%
-                </div>
-              </div>
-            </div>
-
-            {/* Application */}
-            <div className="relative">
-              <span className="text-base font-medium sm:text-sm">
-                Application
-              </span>
-              <div
-                className="relative mt-2 h-3 w-full min-w-[80px] rounded-full bg-[#DDBBF1] sm:min-w-[60px]
-                  md:min-w-[80px] lg:min-w-[100px]"
-              >
-                <div
-                  className="h-full rounded-full bg-[#DDBBF1]"
-                  style={{ width: `${applicationPercent}%` }}
-                ></div>
-                <div
-                  className="absolute -top-2 flex h-6 w-6 items-center justify-center rounded-full border-2
-                    border-black bg-[#DDBBF1] text-xs font-bold sm:h-7 sm:w-7"
-                  style={{
-                    left: `${applicationPercent}%`,
-                    transform: "translateX(-50%)",
-                  }}
-                >
-                  {applicationPercent}%
-                </div>
-              </div>
-            </div>
-          </div>
 
           {/* Horizontal Dashed Line */}
-          <div className="my-1 w-full md:hidden">
-            <svg
-              width="100%"
-              height="2.5"
-              className="stroke-black"
-            >
-              <path
-                strokeDasharray="9 9"
-                strokeLinecap="round"
-                strokeWidth="2.5"
-                d="M1.5 1.5h997"
-              />
-            </svg>
-          </div>
 
+          <div className=" flex flex-col items-center justify-center">
+            <div className="flex items-center justify-center">
+              <img
+                src="/media/attemptarrow.png"
+                alt="Arrow Icon"
+                className="h-7 w-10 sm:h-8 sm:w-12 md:h-9 md:w-14"
+              />
+            </div>
+            <span className="mt-2 w-full text-center text-sm text-black sm:text-base">
+              <span className="block max-w-full truncate font-bold text-black">
+                Score 80% & Above
+              </span>
+            </span>
+          </div>
           {/* Vertical Dashed Line */}
           <div className="hidden h-full md:mx-1 md:flex md:justify-center">
             <svg
@@ -621,47 +536,15 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
           {/* Right content - Attempts and Difficulty */}
           <div
-            className="flex w-full flex-col items-center space-y-3 md:w-2/5 md:items-center
-              md:space-y-2"
+            className="flex w-full flex-col items-center justify-center md:w-2/5 md:items-center
+             "
           >
-            {/* Attempts */}
-            <div className="mt-8 flex flex-col items-center">
-              <div className="flex items-center justify-center">
-                <img
-                  src="/media/attemptarrow.png"
-                  alt="Arrow Icon"
-                  className="h-7 w-10 sm:h-8 sm:w-12 md:h-9 md:w-14"
-                />
-              </div>
-              <span className="mt-2 w-full text-center text-sm text-black sm:text-base">
-                <span className="block max-w-full truncate font-bold text-black">
-                  Score 80% & Above
-                </span>
-              </span>
-            </div>
-
-            {/* Divider */}
-            <div className="w-full px-4 sm:px-2 md:px-2">
-              <svg
-                width="100%"
-                height="2.5"
-                className="stroke-black"
-              >
-                <path
-                  strokeDasharray="9 9"
-                  strokeLinecap="round"
-                  strokeWidth="2.5"
-                  d="M1.5 1.5h997"
-                />
-              </svg>
-            </div>
-
             {/* Difficulty Section*/}
-            <div className="text-center">
-              <div className="text-xs font-semibold text-black sm:text-sm md:text-base dark:text-white">
+            <div className="text-center flex flex-col items-center justify-center gap-2">
+              <div className="text-xs font-semibold text-black sm:text-sm md:text-base ">
                 {examData?.level || "Intermediate"}
               </div>
-              <div className="relative mt-1 flex items-center justify-center">
+              <div className="relative flex items-center justify-center">
                 <img
                   src="/media/staricon.png"
                   alt="Star Icon"
@@ -669,14 +552,13 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
                 />
                 <div
                   className={`relative z-0 flex items-center rounded-full py-1 pr-3 pl-7 text-sm sm:pr-4
-                    sm:pl-8 sm:text-base md:pr-5 md:pl-10 md:text-lg ${
-                    examData?.difficulty?.toLowerCase() === "easy"
-                        ? "bg-[#F3FFE7] text-[#567F2D]"
-                        : examData?.difficulty?.toLowerCase() === "medium"
-                          ? "bg-[#FFF8D0] text-[#CCA028]"
-                          : examData?.difficulty?.toLowerCase() === "hard"
-                            ? "bg-[#FFEAE7] text-[#7F352D]"
-                            : "bg-gray-100 text-gray-800"
+                    sm:pl-8 sm:text-base md:pr-5 md:pl-10 md:text-lg ${examData?.difficulty?.toLowerCase() === "easy"
+                      ? "bg-[#F3FFE7] text-[#567F2D]"
+                      : examData?.difficulty?.toLowerCase() === "medium"
+                        ? "bg-[#FFF8D0] text-[#CCA028]"
+                        : examData?.difficulty?.toLowerCase() === "hard"
+                          ? "bg-[#FFEAE7] text-[#7F352D]"
+                          : "bg-gray-100 text-gray-800"
                     }`}
                 >
                   <span className="font-semibold">
@@ -822,11 +704,10 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
 
       {/* Sidebar */}
       <div
-        className={` ${
-          isMobile
-            ? `fixed inset-y-0 right-0 z-40 w-[200px] transition-transform duration-300
+        className={` ${isMobile
+          ? `fixed inset-y-0 right-0 z-40 w-[200px] transition-transform duration-300
               ease-in-out`
-            : "absolute right-0 w-[200px]"
+          : "absolute right-0 w-[200px]"
           } ${isMobile && !isMenuOpen ? "translate-x-full" : "translate-x-0"} flex
           flex-col overflow-auto overflow-y-hidden rounded-l-3xl bg-white p-3 shadow-lg`}
         style={{
@@ -1011,14 +892,14 @@ const Description = ({ title, category, onBack }: DescriptionProps) => {
             <div className="grid w-full grid-cols-5 gap-1 pr-1">
               {examData?.totalQuestions
                 ? Array.from({ length: examData.totalQuestions }, (_, i) => (
-                    <div
-                      key={i}
-                      className={`relative z-10 flex h-6 w-6 cursor-pointer items-center justify-center
+                  <div
+                    key={i}
+                    className={`relative z-10 flex h-6 w-6 cursor-pointer items-center justify-center
                         rounded-full bg-[#D9D9D9] text-xs font-semibold sm:h-7 sm:w-7`}
-                    >
-                      {String(i + 1).padStart(2, "0")}
-                    </div>
-                  ))
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                ))
                 : "Loading..."}
             </div>
           </ScrollContainer>
